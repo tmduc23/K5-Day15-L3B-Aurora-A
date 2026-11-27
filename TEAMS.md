@@ -11,10 +11,10 @@
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | Trần Minh Đức | 2A202603977 | Đội trưởng | ____ |
-| 2 | Trần Tùng Lâm | 2A202603893 | Thành viên | ____ |
-| 3 | Trần Thị Nhài | 2A202603911 | Thành viên | ____ |
-| 4 | Ngô Ngọc Hải | 2A202603939 | Thành viên | ____ |
+| 1 | Trần Minh Đức | 2A202603977 | Đội trưởng | PM, data mining preclass, canvas & spec |
+| 2 | Trần Tùng Lâm | 2A202603893 | Thành viên | Phỏng vấn học viên, evidence/summary.md, cost/simulate.py |
+| 3 | Trần Thị Nhài | 2A202603911 | Thành viên | eval/benchmark.csv, eval/metric_spec.yaml, chạy eval |
+| 4 | Ngô Ngọc Hải | 2A202603939 | Thành viên | codebase/agent.py, tools.py, run.py |
 
 **Quy tắc điền**
 - **Lớp:** `L3A` hoặc `L3B`. **Track:** một chữ `A` (EdTech), `B` (Y tế), `C` (Du lịch), `D` (Thương mại điện tử), `E` (Tài chính) hoặc `F` (Làn khác). **Link repo:** link GitHub công khai của nhóm.

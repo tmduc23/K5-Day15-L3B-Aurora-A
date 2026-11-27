@@ -1,21 +1,25 @@
-# AI SPEC — [Tên lát cắt] · Nhóm [tên nhóm] · Phòng [XXX] · Zone [X]
+# AI SPEC — Tutor Pre-class A1 · Nhóm Aurora · Track A
 
 > Mốc nộp: §7 chốt chuẩn "đạt" tại **CP2 19:30 Thứ Sáu 27/11** · §0–§7 nộp **CP3 10:00 Thứ Bảy 28/11** · đủ §0–§10 **CP4 14:30 Thứ Bảy 28/11** · §10 changelog ghi tiếp đến **23:59 Thứ Bảy 28/11**.
-> Đầu mỗi mục ghi bước guide (`02-guide.md` trong repo đề) chỉ cách điền. Mỗi mục ngắn, có số và nguồn; chi tiết để ở file được trỏ tới. Xoá dòng hướng dẫn trong ngoặc vuông khi điền xong.
 
-Track: [ ] A · [ ] B · [ ] C · [ ] D · [ ] E — bài toán: [đề gợi ý trong file track, hoặc bài toán nhóm tự mở rộng] __
-Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
+Track: [x] A — bài toán: Tối ưu trợ giảng AI trả lời câu hỏi dưới video có trích đúng nguồn bài, học viên tự kiểm được
+Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv (đã ẩn danh; không commit nguyên file)
 
 ## §0. Hiện tại việc này diễn ra thế nào *(guide 1.1)*
-- Luồng hiện tại của việc này, trong khoá hoặc trên app thật (3–5 bước; ảnh chụp từ tài khoản của mình, đã che thông tin):
-- Công cụ / AI đang được dùng cho việc này (nếu có) + nguồn. Không kiểm được thì ghi "chưa kiểm":
+- Luồng hiện tại:
+  1. Học viên xem video pre-class trên preclass-online.com
+  2. Gặp câu hỏi kỹ thuật → gõ vào ô chat trợ giảng AI dưới video
+  3. Trợ giảng AI trả lời (hiện tại trả lời dạng văn, không rõ trích từ đoạn nào)
+  4. Học viên không biết câu trả lời đúng hay bịa → tìm lại thủ công trong video hoặc tin luôn
+  5. Nếu tin sai → vào buổi lab với kiến thức thiếu/sai
+- Công cụ / AI đang dùng: trợ giảng AI đã chạy thật trên trang pre-class (chưa kiểm cụ thể model/phiên bản)
 
 ## §1. Người dùng & bằng chứng *(guide 1.1, 1.2)*
-- Người dùng chính (một vai cụ thể):
-- Việc họ cố làm xong (`động từ + đối tượng + bối cảnh`, không có chữ AI):
-- Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ:
-- Pain (KHÔNG chữ AI): ai — đang làm gì — vướng đâu — hậu quả gì:
-- Bằng chứng — số chính + kết luận (chi tiết: `evidence/summary.md`): __
+- Người dùng chính: Học viên L3B tự học video pre-class trước buổi (không có TA bên cạnh)
+- Việc họ cố làm xong: Hiểu đúng một khái niệm kỹ thuật trong bài trước buổi học sáng hôm sau
+- Hôm nay họ giải bằng gì, hỏng ở đâu: Hỏi trợ giảng AI — nhưng câu trả lời không rõ lấy từ đâu trong bài, học viên không tự kiểm được; chưa bỏ vì không có lựa chọn khác
+- Pain: Học viên — đang hỏi câu kỹ thuật dưới video pre-class — không biết câu trả lời có căn cứ trong bài không — học sai kiến thức hoặc mất thêm 5–10 phút tìm lại thủ công
+- Bằng chứng — số chính (CP1 — giả thuyết, kiểm sau): 1,260 chat log Day01–Day13 (data BTC), trung bình 97 lượt/ngày; giả thuyết ≥30% câu trả lời không trích mã đoạn → sẽ kiểm bằng sample 20 chat + phỏng vấn 2–3 HV chiều 27/11; chi tiết: `evidence/summary.md`
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
