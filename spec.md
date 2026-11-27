@@ -37,28 +37,42 @@ Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv 
 - [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
-- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả):
-- Không làm (≥3 điều):
-- **Sơ đồ** (ảnh / Mermaid / draw.io): [chèn ở đây]
-- **Hình dạng:** [ ] workflow cố định · [ ] một agent · [ ] nhiều agent — 2 dòng lý do, và vì sao **không** chọn hình dạng phức tạp hơn:
+- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả): Một học viên · hỏi một câu kỹ thuật dưới video bài giảng · trợ giảng quyết định trả lời kèm mã đoạn (hoặc nói "không có trong bài" / hỏi lại) · học viên bấm link mở đúng giây trong video để tự kiểm.
+- Không làm (≥3 điều): không trả lời bằng kiến thức ngoài bài · không làm bài tập / quiz hộ, không chấm điểm · không tự gửi tin hay báo TA (chỉ gợi ý học viên hỏi TA) · không xử lý nhiều video cùng lúc hay tóm tắt cả khoá (để dự án `lecture-videorag` làm sau).
+- **Sơ đồ** (Mermaid):
+
+```mermaid
+flowchart LR
+    Q[Câu hỏi của học viên] --> T1[get_lesson_segments<br/>đọc đoạn transcript có mã B1-04…]
+    T1 --> M[call_model<br/>trả lời CHỈ từ các đoạn,<br/>trích mã đoạn, hoặc KHONG_CO_TRONG_BAI]
+    M -->|KHONG_CO_TRONG_BAI| R1[Không có trong bài<br/>+ gợi ý hỏi TA]
+    M -->|có mã đoạn| T2[check_citations<br/>mã có thật? đổi ra link ?t=giây]
+    T2 -->|còn ≥1 mã hợp lệ| A[Trả lời + danh sách nguồn<br/>link YouTube đúng giây]
+    T2 -->|không mã nào hợp lệ| R2[Chặn: không trả lời,<br/>nói không tìm thấy + gợi ý hỏi TA]
+    M -->|câu hỏi mơ hồ| H[Hỏi lại học viên 1 câu]
+```
+
+- **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent — Luồng luôn là đọc đoạn → model trả lời theo mã → code kiểm mã, không cần AI tự chọn bước. Bài giảng ngắn (39 đoạn ≈ 12k token) nên đưa hết vào context, không cần vòng lặp tìm kiếm; agent hay nhiều agent chỉ thêm chi phí, độ trễ và chỗ sai mà không thêm độ chính xác trích dẫn.
 - **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  |  |  |  |  |
+  | `get_lesson_segments` | mã bài (`B1`, `B2`; rỗng = mọi bài) | danh sách đoạn `{ma_doan, bai, start, end, text}` từ `data/lesson_segments.csv` | Không (chỉ đọc) |
+  | `check_citations` | danh sách mã đoạn model trích | `{valid: [{ma_doan, link ?t=giây, khoang thời gian}], invalid: [mã bịa]}` | Không (chỉ đọc) |
 
-- **Mức tự động:** [ ] AI gợi ý, người quyết · [ ] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — lý do (sai thì ai chịu gì, sửa đắt hay rẻ):
-- **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì):
-- **Chỗ người duyệt** (việc AI không được tự làm):
+- **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — Có mã đoạn hợp lệ thì trả lời ngay (học viên tự kiểm bằng link, sửa rẻ); không có căn cứ thì không trả lời mà chuyển sang TA. Sai thì học viên học sai kiến thức trước buổi lab và TA mất giờ sửa, nên không cho AI trả lời khi không có nguồn.
+- **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì): Rủi ro lớn nhất là trả lời bịa hoặc trích nguồn sai. Chặn ở `check_citations` + `agent.py`: model không được viết thời gian, chỉ trích mã; code bỏ mã không tồn tại, đổi mã ra link đúng giây; câu trả lời không còn mã hợp lệ nào thì bị thay bằng câu "không tìm thấy trong bài".
+- **Chỗ người duyệt** (việc AI không được tự làm): báo lỗi nội dung bài giảng, trả lời câu hỏi ngoài bài, chấm điểm / làm bài tập — AI chỉ gợi ý học viên hỏi TA; TA quyết định.
 - **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
 
   | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
   |---|---|
-  | G10 — thu hẹp phạm vi khi không chắc |  |
-  |  |  |
-  |  |  |
+  | G10 — thu hẹp phạm vi khi không chắc | Nhánh `KHONG_CO_TRONG_BAI` và nhánh "không mã nào hợp lệ" → không trả lời, gợi ý hỏi TA (`agent.py`, `SAFE_FALLBACK`) |
+  | Mọi khẳng định kiểm chứng được | Model chỉ trích mã đoạn; `check_citations` đổi ra link `youtu.be/…?t=giây` để học viên bấm xem lại |
+  | Code giữ sự thật, model giữ ngôn ngữ | Thời gian và link do code tra từ `lesson_segments.csv`, model không bao giờ tự viết timestamp |
+  | Hỏi lại khi mơ hồ | Luật trong `SYSTEM` (`agent.py`): câu hỏi không rõ phần nào → hỏi lại 1 câu, không đoán |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật:
+- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: (1) Dữ liệu bài giảng là transcript 2 video 3Blue1Brown công khai, **dùng thay tạm** cho video pre-class Day08 vì data BTC chưa có trên máy chạy code — cần thay trước CP3. (2) Lượt chạy CP2 dùng model chế độ giả (`MODEL_PROVIDER` trống); đã viết sẵn nhánh gọi model thật qua OpenRouter/OpenAI trong `codebase/ai.py`.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -75,8 +89,8 @@ Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv 
 - Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — __ câu (thuong __ · kho __ · tu_choi __) · metric: `eval/metric_spec.yaml` (__ metric)
-- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ __% câu qua, và __"
+- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 14 câu (thuong 6 · kho 5 · tu_choi 3) · metric: `eval/metric_spec.yaml` (3 metric)
+- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ 80% câu qua, và 0 mã đoạn bịa trong toàn bộ lượt chạy, và 100% câu tu_choi qua"
 - Kết quả: lượt 1 __/__ (__%) · lượt 2 __/__ (__%) — run ID: __ / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
