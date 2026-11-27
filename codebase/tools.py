@@ -1,18 +1,54 @@
-"""Công cụ của bài toán — NHÓM VIẾT. Điền ở guide bước 2.2 (thiết kế) và 3.2 (code).
+"""Công cụ của bài toán — trợ giảng trả lời câu hỏi dưới video, có trích mã đoạn.
 
-Mỗi công cụ là một hàm Python có @tool. Docstring ghi đúng 4 ý như sơ đồ ở spec.md §4:
-    tên · input · output · có tác động ra ngoài không (gửi tin, sửa dữ liệu, chấm điểm…)
-Khung tự ghi mỗi lần gọi công cụ vào trace (tên, input, output rút gọn, thời gian, lỗi).
-
-Số công cụ, kiểu công cụ do thiết kế của nhóm quyết định — có bài chỉ cần một công cụ tra cứu.
-Công cụ có tác động ra ngoài: KHÔNG tự làm. Trả về bản nháp chờ người duyệt (guide bước 2.2, "chỗ người duyệt").
-Dữ liệu công cụ đọc (bài mẫu, thông báo mẫu, lịch…): để trong data/ và mô tả ở data/DATA_CARD.md.
+Mỗi công cụ là một hàm Python có @tool. Docstring ghi: tên · input · output · có tác động ra ngoài không.
+Dữ liệu: data/lesson_segments.csv (transcript bài giảng đã chia đoạn, mỗi đoạn một mã như "B1-04").
 """
-from tracing import tool, TOOLS  # noqa: F401  (TOOLS: danh sách công cụ đã đăng ký, dùng khi viết vòng lặp agent)
+import csv
+import os
+
+from tracing import tool, TOOLS  # noqa: F401
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SEGMENTS_CSV = os.path.join(ROOT, "data", "lesson_segments.csv")
+_cache = {}
+
+
+def _load():
+    if "rows" not in _cache:
+        with open(SEGMENTS_CSV, encoding="utf-8") as f:
+            _cache["rows"] = [dict(r, start=int(r["start"]), end=int(r["end"])) for r in csv.DictReader(f)]
+    return _cache["rows"]
+
+
+def fmt_time(sec):
+    sec = int(sec)
+    return "%02d:%02d" % (sec // 60, sec % 60) if sec < 3600 else "%d:%02d:%02d" % (sec // 3600, sec % 3600 // 60, sec % 60)
 
 
 @tool
-def search_example(query: str) -> list:
-    """(ví dụ — thay bằng công cụ của nhóm) Tra dữ liệu mẫu theo câu hỏi.
-    Input: câu hỏi (str). Output: danh sách đoạn {"code", "text"}. Không tác động ra ngoài."""
-    return [{"code": "VD-1", "text": "(ví dụ) đoạn dữ liệu giả — thay bằng dữ liệu thật của bài toán"}]
+def get_lesson_segments(bai: str = "") -> list:
+    """get_lesson_segments — lấy các đoạn transcript của bài giảng.
+    Input: mã bài ("B1", "B2"; rỗng = mọi bài). Output: danh sách {ma_doan, bai, start, end, text}.
+    Không tác động ra ngoài (chỉ đọc data/lesson_segments.csv)."""
+    rows = _load()
+    return [r for r in rows if not bai or r["bai"] == bai]
+
+
+@tool
+def check_citations(codes: list) -> dict:
+    """check_citations — kiểm mã đoạn model trích có thật trong dữ liệu không, và đổi ra link YouTube đúng giây.
+    Input: danh sách mã đoạn (vd ["B1-04", "B9-99"]). Output: {"valid": [{ma_doan, link, khoang}], "invalid": [mã]}.
+    Không tác động ra ngoài."""
+    by_code = {r["ma_doan"]: r for r in _load()}
+    valid, invalid = [], []
+    for c in codes:
+        r = by_code.get(c)
+        if r is None:
+            invalid.append(c)
+            continue
+        valid.append({
+            "ma_doan": c,
+            "link": "https://youtu.be/%s?t=%d" % (r["youtube_id"], r["start"]),
+            "khoang": "%s–%s" % (fmt_time(r["start"]), fmt_time(r["end"])),
+        })
+    return {"valid": valid, "invalid": invalid}
