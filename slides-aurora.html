@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora — Track A Analysis</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* ── Tokens ── */
+:root {
+  --bg:     #090D18;
+  --bg2:    #111827;
+  --bg3:    #1A2744;
+  --fg:     #E8EDF5;
+  --fg2:    #94A3B8;
+  --violet: #818CF8;
+  --teal:   #2DD4BF;
+  --amber:  #F59E0B;
+  --red:    #F87171;
+  --green:  #4ADE80;
+  --border: #1E3252;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #000;
+  font-family: 'Inter', Arial, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Deck container ── */
+#deck {
+  width: 1280px;
+  height: 720px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Slides ── */
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 72px 88px;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Typography ── */
+h1 { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 72px; line-height: 1.05; font-weight: 700; color: var(--fg); }
+h2 { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 48px; line-height: 1.1; font-weight: 700; color: var(--fg); }
+h3 { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 32px; line-height: 1.2; font-weight: 600; color: var(--fg); }
+p  { font-size: 22px; line-height: 1.6; color: var(--fg2); }
+
+.eyebrow {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 16px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--violet);
+}
+
+/* ── Layout helpers ── */
+.row  { display: flex; gap: 24px; }
+.col  { flex: 1; min-width: 0; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.mt8  { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mt24 { margin-top: 24px; }
+.mt32 { margin-top: 32px; }
+.mt40 { margin-top: 40px; }
+
+/* ── Cards ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+.card.hl-teal  { border-color: var(--teal);   background: linear-gradient(135deg,#0d2a28,var(--bg2)); }
+.card.hl-violet{ border-color: var(--violet);  background: linear-gradient(135deg,#1a1560,var(--bg2)); }
+.card.hl-amber { border-color: var(--amber);   background: linear-gradient(135deg,#2d1e00,var(--bg2)); }
+.card.hl-green { border-color: var(--green);   background: linear-gradient(135deg,#072212,var(--bg2)); }
+.card.hl-red   { border-color: var(--red);     background: linear-gradient(135deg,#2d0d0d,var(--bg2)); }
+
+/* ── Big stat ── */
+.stat-num {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 56px; font-weight: 700; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--violet);
+}
+.stat-num.t  { color: var(--teal); }
+.stat-num.a  { color: var(--amber); }
+.stat-num.g  { color: var(--green); }
+.stat-label  { font-size: 20px; color: var(--fg2); margin-top: 8px; }
+
+/* ── Pill ── */
+.pill {
+  display: inline-block;
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 16px; font-weight: 600;
+  padding: 5px 14px; border-radius: 100px; border: 1px solid;
+}
+.pill.v { background:#1a1560; border-color:var(--violet); color:var(--violet); }
+.pill.t { background:#052824; border-color:var(--teal);   color:var(--teal); }
+.pill.a { background:#2d1e00; border-color:var(--amber);  color:var(--amber); }
+.pill.r { background:#2d0d0d; border-color:var(--red);    color:var(--red); }
+.pill.g { background:#072212; border-color:var(--green);  color:var(--green); }
+
+/* ── Badge ── */
+.badge {
+  display: inline-block;
+  font-size: 15px; font-weight: 700;
+  padding: 4px 12px; border-radius: 6px;
+}
+.badge.go   { background:#14432a; color:var(--green); }
+.badge.warn { background:#3d2a04; color:var(--amber); }
+.badge.stop { background:#3d1414; color:var(--red); }
+
+/* ── Track ID ── */
+.track-id {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 44px; font-weight: 700; line-height: 1;
+  color: var(--violet);
+}
+.track-id.t { color: var(--teal); }
+
+/* ── Footer / nav ── */
+#nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(9,13,24,0.9);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 20px;
+  backdrop-filter: blur(8px);
+}
+#nav button {
+  background: none; border: none; cursor: pointer;
+  color: var(--fg2); font-size: 18px; padding: 4px 10px;
+  border-radius: 8px; transition: color 0.2s, background 0.2s;
+}
+#nav button:hover { color: var(--fg); background: var(--bg3); }
+#slide-counter {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 15px; color: var(--fg2);
+  min-width: 60px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+.nav-dot.active { background: var(--violet); }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes aurora {
+  0%,100% { opacity:0.6; }
+  50%      { opacity:1; }
+}
+
+.slide.active .anim0 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.0s both; }
+.slide.active .anim1 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+.slide.active .anim2 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.2s both; }
+.slide.active .anim3 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.3s both; }
+.slide.active .anim4 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
+.slide.active .anim5 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.5s both; }
+.slide.active .anim6 { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.6s both; }
+
+/* ── Slide-specific ── */
+#cover { padding: 0; overflow: hidden; }
+#cover .content {
+  position: absolute;
+  left: 88px; top: 160px; width: 680px;
+}
+#cover h1 { font-size: 90px; line-height: 1; }
+#cover h2 { font-size: 50px; font-weight: 300; color: var(--violet); margin-top: 12px; }
+
+/* role cards */
+.role-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.role-card.lead { border-color: var(--amber); background: linear-gradient(135deg,#2d1e00,var(--bg2)); }
+.role-name { font-family:'Space Grotesk',Arial,sans-serif; font-size:26px; font-weight:700; color:var(--fg); }
+.role-title{ font-size:16px; color:var(--violet); font-weight:600; margin-top:4px; }
+.role-tasks{ margin-top:12px; padding:0; list-style:none; }
+.role-tasks li { font-size:18px; color:var(--fg2); padding:5px 0; border-bottom:1px solid var(--border); line-height:1.4; }
+.role-tasks li:last-child { border-bottom:none; }
+
+/* progress bar */
+.progress-bar {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--violet), var(--teal));
+  transition: width 0.4s ease;
+}
+
+/* rec highlight */
+.rec-box {
+  background: linear-gradient(135deg, #1a1560, #052824);
+  border: 2px solid var(--violet);
+  border-radius: 20px;
+  padding: 32px 36px;
+  margin-top: 24px;
+}
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- ═══════════════════════════════ SLIDE 1: COVER ═══════════════════════ -->
+  <div class="slide" id="cover">
+    <!-- Aurora SVG BG -->
+    <svg aria-label="Aurora background" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="rg1" cx="25%" cy="40%" r="55%"><stop offset="0%" stop-color="#4F46E5" stop-opacity="0.5"/><stop offset="100%" stop-color="#090D18" stop-opacity="0"/></radialGradient>
+        <radialGradient id="rg2" cx="75%" cy="25%" r="50%"><stop offset="0%" stop-color="#0D9488" stop-opacity="0.45"/><stop offset="100%" stop-color="#090D18" stop-opacity="0"/></radialGradient>
+        <radialGradient id="rg3" cx="55%" cy="75%" r="45%"><stop offset="0%" stop-color="#7C3AED" stop-opacity="0.3"/><stop offset="100%" stop-color="#090D18" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="1280" height="720" fill="#090D18"/>
+      <rect width="1280" height="720" fill="url(#rg1)"><animate attributeName="opacity" values="1;0.7;1" dur="5s" repeatCount="indefinite"/></rect>
+      <rect width="1280" height="720" fill="url(#rg2)"><animate attributeName="opacity" values="0.8;1;0.8" dur="4s" repeatCount="indefinite"/></rect>
+      <rect width="1280" height="720" fill="url(#rg3)"><animate attributeName="opacity" values="1;0.6;1" dur="6s" repeatCount="indefinite"/></rect>
+      <!-- Stars -->
+      <circle cx="80" cy="60" r="1.5" fill="#E8EDF5" opacity="0.7"/>
+      <circle cx="250" cy="40" r="1" fill="#E8EDF5" opacity="0.5"/>
+      <circle cx="450" cy="90" r="2" fill="#818CF8" opacity="0.5"/>
+      <circle cx="620" cy="55" r="1.5" fill="#E8EDF5" opacity="0.5"/>
+      <circle cx="800" cy="75" r="1" fill="#2DD4BF" opacity="0.6"/>
+      <circle cx="1050" cy="45" r="2" fill="#E8EDF5" opacity="0.5"/>
+      <circle cx="1180" cy="100" r="1.5" fill="#E8EDF5" opacity="0.6"/>
+      <circle cx="1250" cy="250" r="1" fill="#818CF8" opacity="0.5"/>
+      <circle cx="30" cy="380" r="1.5" fill="#E8EDF5" opacity="0.3"/>
+      <!-- Big A -->
+      <text x="940" y="590" font-family="Space Grotesk,Arial" font-size="420" font-weight="700" fill="#818CF8" opacity="0.08">A</text>
+      <text x="940" y="590" font-family="Space Grotesk,Arial" font-size="420" font-weight="700" fill="none" stroke="#818CF8" stroke-width="1.5" opacity="0.25">A</text>
+    </svg>
+    <div class="content">
+      <p class="eyebrow anim0" style="margin-bottom:16px;">AI20K Khoá 5 · L3B · Hackathon 27–28/11/2026</p>
+      <h1 class="anim1">Nhóm Aurora</h1>
+      <h2 class="anim2">Track A — EdTech</h2>
+      <p class="anim3" style="font-size:24px;margin-top:24px;line-height:1.7;">Phân tích data BTC &amp; 6 hướng ý tưởng<br>Phân vai nhóm 4 người</p>
+      <div class="anim4" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:36px;">
+        <span class="pill t">Trần Minh Đức · Đội trưởng</span>
+        <span class="pill v">Trần Tùng Lâm</span>
+        <span class="pill v">Trần Thị Nhài</span>
+        <span class="pill v">Ngô Ngọc Hải</span>
+      </div>
+    </div>
+    <div class="progress-bar" id="pb"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 2: DATA ═══════════════════════ -->
+  <div class="slide" id="stats">
+    <p class="eyebrow anim0">Data BTC Cung Cấp · data/preclass/</p>
+    <h2 class="anim1" style="margin-top:8px;">Nhật ký hành vi thật — 20 ngày học</h2>
+    <div class="row mt32">
+      <div class="card anim2">
+        <div class="stat-num">721</div>
+        <div class="stat-label">tài khoản học viên</div>
+      </div>
+      <div class="card anim3">
+        <div class="stat-num t">436</div>
+        <div class="stat-label">người có hoạt động <span style="color:var(--amber)">(60%)</span></div>
+      </div>
+      <div class="card anim4">
+        <div class="stat-num a">107K+</div>
+        <div class="stat-label">sự kiện học tập</div>
+      </div>
+    </div>
+    <div class="row mt16">
+      <div class="card anim4">
+        <div class="stat-num" style="font-size:44px;">1,260</div>
+        <div class="stat-label">lượt hỏi AI trợ giảng</div>
+      </div>
+      <div class="card anim5">
+        <div class="stat-num t" style="font-size:44px;">3,776</div>
+        <div class="stat-label">lần học viên trả lời câu hỏi</div>
+      </div>
+      <div class="card anim5">
+        <div class="stat-num a" style="font-size:44px;">2,472</div>
+        <div class="stat-label">mục bài đã hoàn thành</div>
+      </div>
+      <div class="card anim6">
+        <div class="stat-num g" style="font-size:44px;">228</div>
+        <div class="stat-label">lần được thưởng điểm</div>
+      </div>
+    </div>
+    <p class="anim6" style="margin-top:16px;font-size:18px;">Phạm vi: Day01 → Day13 (05/11 – 25/11/2026) · UTC+7 · Đã ẩn danh hoàn toàn</p>
+    <div class="progress-bar" id="pb2"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 3: INSIGHTS ═══════════════════ -->
+  <div class="slide" id="insights">
+    <p class="eyebrow anim0">Insight từ data</p>
+    <h2 class="anim1" style="margin-top:8px;">4 tín hiệu pain rõ từ con số</h2>
+    <div class="grid2 mt32">
+      <div class="card hl-red anim2">
+        <div class="stat-num r" style="font-size:52px;">40%</div>
+        <h3 style="font-size:24px;margin-top:8px;color:var(--red);">Học viên không tham gia</h3>
+        <p style="margin-top:8px;font-size:18px;">285/721 tài khoản không có sự kiện nào. Dropout hoặc rào cản tiếp cận bài.</p>
+      </div>
+      <div class="card hl-violet anim3">
+        <div class="stat-num" style="font-size:52px;">~97/ngày</div>
+        <h3 style="font-size:24px;margin-top:8px;color:var(--violet);">Câu hỏi AI trợ giảng</h3>
+        <p style="margin-top:8px;font-size:18px;">1,260 lượt / 13 ngày. Học viên hỏi thật — đây là pain thật nhất có thể đo.</p>
+      </div>
+      <div class="card hl-amber anim4">
+        <div class="stat-num a" style="font-size:52px;">5.7x</div>
+        <h3 style="font-size:24px;margin-top:8px;color:var(--amber);">Hỏi AI nhiều hơn trả lời</h3>
+        <p style="margin-top:8px;font-size:18px;">1,260 chat vs 3,776 answers. Học viên hỏi nhiều nhưng vẫn struggle với bài.</p>
+      </div>
+      <div class="card hl-teal anim5">
+        <div class="stat-num t" style="font-size:52px;">Day 1–3</div>
+        <h3 style="font-size:24px;margin-top:8px;color:var(--teal);">Engagement cao nhất đầu khoá</h3>
+        <p style="margin-top:8px;font-size:18px;">Phần lớn sự kiện tập trung đầu khoá — theo dõi dropout theo ngày để tìm điểm rơi.</p>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 4: TRACK MAP ══════════════════ -->
+  <div class="slide" id="trackmap">
+    <p class="eyebrow anim0">Track A — 6 Hướng</p>
+    <h2 class="anim1" style="margin-top:8px;">Bản đồ nhanh các hướng</h2>
+    <div class="grid3 mt24">
+      <div class="card hl-teal anim2">
+        <div class="track-id t">A1</div>
+        <h3 style="font-size:22px;margin-top:4px;">Tutor LMS</h3>
+        <p style="margin-top:8px;font-size:17px;">Trợ giảng AI dưới video — tối ưu hoặc tính năng mới</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="badge go">✅ Khả thi</span>
+          <span class="badge go">📊 Data sẵn</span>
+        </div>
+      </div>
+      <div class="card hl-teal anim3">
+        <div class="track-id t">A2</div>
+        <h3 style="font-size:22px;margin-top:4px;">Discord Bot</h3>
+        <p style="margin-top:8px;font-size:17px;">Trả lời logistics từ nguồn chính thức, không tự đoán</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="badge go">✅ Khả thi</span>
+          <span class="badge warn">⚠️ Tự thu data</span>
+        </div>
+      </div>
+      <div class="card anim4">
+        <div class="track-id">A3</div>
+        <h3 style="font-size:22px;margin-top:4px;">Sản xuất bài</h3>
+        <p style="margin-top:8px;font-size:17px;">Rà soát kịch bản AI, kiểm tra kiến thức, duyệt nội dung</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="badge warn">⚠️ Căng 10h</span>
+        </div>
+      </div>
+      <div class="card anim4">
+        <div class="track-id">A4</div>
+        <h3 style="font-size:22px;margin-top:4px;">Lớp học mới</h3>
+        <p style="margin-top:8px;font-size:17px;">Bạn học AI, học chủ động, điều phối nhiều vai</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="badge stop">❌ Rủi ro cao</span>
+        </div>
+      </div>
+      <div class="card anim5">
+        <div class="track-id">A5</div>
+        <h3 style="font-size:22px;margin-top:4px;">Vận hành lịch</h3>
+        <p style="margin-top:8px;font-size:17px;">Lịch phòng, phân công, thông báo đúng người đúng lúc</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="badge go">✅ Khả thi</span>
+          <span class="badge warn">⚠️ Data giả lập</span>
+        </div>
+      </div>
+      <div class="card anim6">
+        <div class="track-id">A6</div>
+        <h3 style="font-size:22px;margin-top:4px;">Hướng khác</h3>
+        <p style="margin-top:8px;font-size:17px;">Khách hàng ảo, giám khảo AI, chấm theo tiêu chí…</p>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="badge warn">⚠️ Tự thu data</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 5: A1 ══════════════════════════ -->
+  <div class="slide" id="a1">
+    <div class="row" style="gap:16px;align-items:center;margin-bottom:16px;">
+      <div>
+        <span class="eyebrow anim0">Hướng A1</span>
+        <h2 class="anim1" style="margin-top:4px;">Tutor cho LMS &amp; trang pre-class</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;" class="anim1">
+        <span class="badge go">✅ Rất khả thi</span>
+        <span class="pill t">Data sẵn</span>
+      </div>
+    </div>
+    <div class="row" style="gap:20px;">
+      <div class="col">
+        <div class="card hl-teal anim2">
+          <h3 style="font-size:22px;color:var(--teal);">💡 Cơ hội</h3>
+          <p style="margin-top:8px;font-size:19px;color:var(--fg);">1,260 lượt hỏi AI thật trong data BTC. Trợ giảng tốt = trả lời có căn cứ trong bài, biết nói "không có trong bài".</p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:22px;">🎯 Lát cắt gợi ý</h3>
+          <p style="margin-top:8px;font-size:18px;">Học viên hỏi dưới video → trợ giảng quyết định trả lời (kèm đoạn trích) hoặc từ chối → học viên kiểm lại bằng cách mở đúng đoạn.</p>
+        </div>
+        <div class="card mt16 anim4">
+          <h3 style="font-size:22px;color:var(--amber);">⚠️ Bẫy cần tránh</h3>
+          <p style="margin-top:8px;font-size:18px;color:var(--fg2);">Chatbot chung chung không gắn bài · Đo "trả lời hay" thay vì "trích đúng nguồn" · Thiếu câu "không có trong bài".</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card anim2">
+          <h3 style="font-size:20px;color:var(--fg2);">📊 Data có sẵn</h3>
+          <p style="margin-top:8px;font-size:18px;color:var(--green);">✅ chat.csv · answers.csv · events.csv<br>1,260 lượt hỏi thật Day01–Day13</p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:20px;color:var(--fg2);">🔧 Công cụ AI</h3>
+          <p style="margin-top:8px;font-size:18px;">search_lesson(query) → đoạn trích<br>get_passage(code) → nội dung bài<br>Chỉ đọc, không tác động ngoài</p>
+        </div>
+        <div class="card mt16 anim4">
+          <h3 style="font-size:20px;color:var(--fg2);">📏 Metric đo</h3>
+          <p style="margin-top:8px;font-size:18px;">% câu trả lời trích đúng đoạn<br>% câu "ngoài bài" từ chối đúng<br><span style="color:var(--teal);">Rõ ràng, dễ đo trong 10h</span></p>
+        </div>
+        <div class="row mt16" style="gap:10px;">
+          <div class="card anim5" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">Độ khó</div>
+            <div style="font-size:22px;font-weight:700;color:var(--green);margin-top:4px;">Thấp–Vừa</div>
+          </div>
+          <div class="card anim5" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">10h với 4 người</div>
+            <div style="font-size:22px;font-weight:700;color:var(--teal);margin-top:4px;">✅ Làm được</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 6: A2 ══════════════════════════ -->
+  <div class="slide" id="a2">
+    <div class="row" style="gap:16px;align-items:center;margin-bottom:16px;">
+      <div>
+        <span class="eyebrow anim0">Hướng A2</span>
+        <h2 class="anim1" style="margin-top:4px;">Trợ lý Discord</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;" class="anim1">
+        <span class="badge go">✅ Rất khả thi</span>
+        <span class="pill a">Cần quan sát</span>
+      </div>
+    </div>
+    <div class="row" style="gap:20px;">
+      <div class="col">
+        <div class="card hl-teal anim2">
+          <h3 style="font-size:22px;color:var(--teal);">💡 Cơ hội</h3>
+          <p style="margin-top:8px;font-size:19px;color:var(--fg);">Câu hỏi logistics (hạn nộp, lịch, phòng) lặp lại liên tục trên Discord. Học viên nhận sai hạn vì bot trả lời từ memory chứ không từ nguồn chính thức.</p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:22px;">🎯 Lát cắt gợi ý</h3>
+          <p style="margin-top:8px;font-size:18px;">Học viên hỏi "hạn nộp lab X" → bot tìm thông báo chính thức → trả lời kèm link / tag TA nếu không tìm được → học viên không nhận hạn sai.</p>
+        </div>
+        <div class="card mt16 anim4">
+          <h3 style="font-size:22px;color:var(--amber);">⚠️ Bẫy cần tránh</h3>
+          <p style="margin-top:8px;font-size:18px;color:var(--fg2);">Hai thông báo ghi hai hạn khác nhau · Thông báo cũ đã thay · Hỏi điểm cá nhân · Tin chèn jailbreak bot.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card anim2">
+          <h3 style="font-size:20px;color:var(--fg2);">📊 Data có sẵn</h3>
+          <p style="margin-top:8px;font-size:18px;">⚠️ Phải tự quan sát Discord công khai<br><span style="color:var(--teal);">✅ data/training-ops/ (giả lập lịch)</span></p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:20px;color:var(--fg2);">🔧 Công cụ AI</h3>
+          <p style="margin-top:8px;font-size:18px;">search_announcements(query)<br>get_thread(id)<br>escalate() → <span style="color:var(--amber);">PHẢI có người duyệt</span></p>
+        </div>
+        <div class="card mt16 anim4">
+          <h3 style="font-size:20px;color:var(--fg2);">📏 Metric đo</h3>
+          <p style="margin-top:8px;font-size:18px;">% câu trả lời đúng nguồn chính thức<br>% câu "không có" chuyển TA đúng<br><span style="color:var(--teal);">Rõ ràng, dễ đo</span></p>
+        </div>
+        <div class="row mt16" style="gap:10px;">
+          <div class="card anim5" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">Độ khó</div>
+            <div style="font-size:22px;font-weight:700;color:var(--green);margin-top:4px;">Thấp</div>
+          </div>
+          <div class="card anim5" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">10h với 4 người</div>
+            <div style="font-size:22px;font-weight:700;color:var(--teal);margin-top:4px;">✅ Làm được</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 7: A3 ══════════════════════════ -->
+  <div class="slide" id="a3">
+    <div class="row" style="gap:16px;align-items:center;margin-bottom:16px;">
+      <div>
+        <span class="eyebrow anim0">Hướng A3</span>
+        <h2 class="anim1" style="margin-top:4px;">Sản xuất bài giảng bằng AI</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;" class="anim1">
+        <span class="badge warn">⚠️ Căng 10h</span>
+      </div>
+    </div>
+    <div class="row" style="gap:20px;">
+      <div class="col">
+        <div class="card anim2">
+          <h3 style="font-size:22px;color:var(--violet);">💡 Cơ hội</h3>
+          <p style="margin-top:8px;font-size:19px;color:var(--fg);">Chỗ nghẽn chuyển sang kiểm &amp; duyệt: AI sinh kịch bản, giảng viên duyệt từng câu khẳng định có nguồn không.</p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:22px;">🎯 Lát cắt gợi ý</h3>
+          <p style="margin-top:8px;font-size:18px;">Giảng viên duyệt kịch bản 40 câu → AI đánh dấu câu sai/thiếu nguồn kèm lý do → giảng viên chấp nhận/từ chối từng chỗ.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card anim2">
+          <h3 style="font-size:20px;color:var(--fg2);">⚠️ Thách thức chính</h3>
+          <ul style="margin-top:8px;padding-left:20px;">
+            <li style="font-size:18px;color:var(--fg2);padding:4px 0;">Data: phải tự dựng (bài mã đoạn, transcript)</li>
+            <li style="font-size:18px;color:var(--fg2);padding:4px 0;">Người dùng: giảng viên/đội sản xuất — ít người, hẹn từ sáng Thứ Sáu</li>
+            <li style="font-size:18px;color:var(--red);padding:4px 0;">Phải đo báo nhầm (false positive) — nguy hiểm nhất</li>
+            <li style="font-size:18px;color:var(--amber);padding:4px 0;">Lát cắt lớn hơn A1/A2, dễ hết giờ</li>
+          </ul>
+        </div>
+        <div class="row mt16" style="gap:10px;">
+          <div class="card anim4" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">Độ khó</div>
+            <div style="font-size:22px;font-weight:700;color:var(--amber);margin-top:4px;">Vừa–Cao</div>
+          </div>
+          <div class="card anim4" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">10h với 4 người</div>
+            <div style="font-size:22px;font-weight:700;color:var(--amber);margin-top:4px;">⚠️ Căng</div>
+          </div>
+        </div>
+        <div class="card hl-amber mt16 anim5">
+          <p style="font-size:18px;color:var(--amber);">Chỉ chọn A3 nếu nhóm có kỹ thuật NLP tốt và đã liên hệ được đội sản xuất bài giảng.</p>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 8: A4 ══════════════════════════ -->
+  <div class="slide" id="a4">
+    <div class="row" style="gap:16px;align-items:center;margin-bottom:16px;">
+      <div>
+        <span class="eyebrow anim0">Hướng A4</span>
+        <h2 class="anim1" style="margin-top:4px;">Lớp học kiểu mới</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;" class="anim1">
+        <span class="badge stop">❌ Rủi ro cao</span>
+      </div>
+    </div>
+    <div class="row" style="gap:20px;">
+      <div class="col">
+        <div class="card hl-violet anim2">
+          <h3 style="font-size:22px;color:var(--violet);">💡 Cơ hội</h3>
+          <p style="margin-top:8px;font-size:19px;color:var(--fg);">Học chủ động qua bạn học AI, Productive Failure, học bằng cách dạy lại. Data preclass có mode MAIC thật — nhưng chỉ từ 25/11, rất ít dòng.</p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:22px;">🎯 Lát cắt gợi ý</h3>
+          <p style="margin-top:8px;font-size:18px;">Học viên xem đoạn bài → bộ điều phối quyết định cho bạn học AI xen vào ai, kiểu gì → học viên trả lời đúng câu kiểm tra sau đoạn.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card hl-red anim2">
+          <h3 style="font-size:20px;color:var(--red);">❌ Vì sao rủi ro?</h3>
+          <ul style="margin-top:8px;padding-left:20px;">
+            <li style="font-size:18px;color:var(--fg2);padding:4px 0;">Nhiều vai → token nhân lên, chi phí cao</li>
+            <li style="font-size:18px;color:var(--fg2);padding:4px 0;">Cần đo learning outcome (không chỉ "AI đúng")</li>
+            <li style="font-size:18px;color:var(--fg2);padding:4px 0;">Data MAIC chỉ có 25/11 → quá ít</li>
+            <li style="font-size:18px;color:var(--red);padding:4px 0;">Bạn học AI hiểu sai phải sửa đúng trong session</li>
+          </ul>
+        </div>
+        <div class="row mt16" style="gap:10px;">
+          <div class="card anim4" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">Độ khó</div>
+            <div style="font-size:22px;font-weight:700;color:var(--red);margin-top:4px;">Cao</div>
+          </div>
+          <div class="card anim4" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">10h với 4 người</div>
+            <div style="font-size:22px;font-weight:700;color:var(--red);margin-top:4px;">❌ Không khuyên</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 9: A5 ══════════════════════════ -->
+  <div class="slide" id="a5">
+    <div class="row" style="gap:16px;align-items:center;margin-bottom:16px;">
+      <div>
+        <span class="eyebrow anim0">Hướng A5</span>
+        <h2 class="anim1" style="margin-top:4px;">Vận hành đào tạo: lịch, phòng, phân công</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;" class="anim1">
+        <span class="badge go">✅ Khả thi</span>
+      </div>
+    </div>
+    <div class="row" style="gap:20px;">
+      <div class="col">
+        <div class="card anim2">
+          <h3 style="font-size:22px;color:var(--violet);">💡 Cơ hội</h3>
+          <p style="margin-top:8px;font-size:19px;color:var(--fg);">Phòng chốt sát ngày, nhiều bảng tính, thông báo nằm rải rác. Key coach mất thời gian soạn thông báo thủ công mỗi tối.</p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:22px;">🎯 Lát cắt gợi ý</h3>
+          <p style="margin-top:8px;font-size:18px;">Key coach tối trước buổi lab → AI đối chiếu phòng vừa xác nhận với lịch lab → soạn thông báo phòng từng nhóm → key coach duyệt rồi gửi.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card anim2">
+          <h3 style="font-size:20px;color:var(--fg2);">📊 Data có sẵn</h3>
+          <p style="margin-top:8px;font-size:18px;color:var(--amber);">⚠️ data/training-ops/ là giả lập<br>Không phải bằng chứng pain thật<br><span style="color:var(--teal);">→ Phải phỏng vấn key coach/ban đào tạo</span></p>
+        </div>
+        <div class="card mt16 anim3">
+          <h3 style="font-size:20px;color:var(--fg2);">⚠️ Điều kiện thành công</h3>
+          <p style="margin-top:8px;font-size:18px;">Phải hỏi được key coach / ban đào tạo tại lớp chiều Thứ Sáu. Nếu không tiếp cận được = không có bằng chứng pain.</p>
+        </div>
+        <div class="card mt16 anim4">
+          <h3 style="font-size:20px;color:var(--red);">❌ Bẫy nghiêm trọng</h3>
+          <p style="margin-top:8px;font-size:18px;color:var(--red);">Để AI tự chốt phòng (phòng do trường cấp) · Trả lời theo bảng cũ.</p>
+        </div>
+        <div class="row mt16" style="gap:10px;">
+          <div class="card anim5" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">Độ khó</div>
+            <div style="font-size:22px;font-weight:700;color:var(--green);margin-top:4px;">Thấp–Vừa</div>
+          </div>
+          <div class="card anim5" style="flex:1;padding:16px;">
+            <div style="font-size:14px;color:var(--fg2);">10h với 4 người</div>
+            <div style="font-size:22px;font-weight:700;color:var(--teal);margin-top:4px;">✅ Nếu có coach</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 10: A6 ═════════════════════════ -->
+  <div class="slide" id="a6">
+    <div class="row" style="gap:16px;align-items:center;margin-bottom:16px;">
+      <div>
+        <span class="eyebrow anim0">Hướng A6</span>
+        <h2 class="anim1" style="margin-top:4px;">Hướng khác trong khoá</h2>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;" class="anim1">
+        <span class="badge warn">⚠️ Phải tự thu data</span>
+      </div>
+    </div>
+    <div class="grid2 mt16">
+      <div class="card anim2">
+        <h3 style="font-size:22px;color:var(--violet);">🤖 Khách hàng ảo — tập phỏng vấn</h3>
+        <p style="margin-top:8px;font-size:18px;">Persona AI trả lời nhất quán, không tự khai pain khi bị hỏi dẫn dắt, chỉ ra câu dẫn dắt.</p>
+        <p style="margin-top:8px;font-size:16px;color:var(--amber);">⚠️ Trò chuyện với persona không phải bằng chứng pain.</p>
+      </div>
+      <div class="card anim3">
+        <h3 style="font-size:22px;color:var(--teal);">⚖️ Giám khảo ảo</h3>
+        <p style="margin-top:8px;font-size:18px;">Đọc repo nhóm cùng rubric → hỏi vặn: số nào không có nguồn, chuẩn "đạt" có bị sửa không.</p>
+        <p style="margin-top:8px;font-size:16px;color:var(--teal);">✅ Thú vị, rubric BTC đã có sẵn.</p>
+      </div>
+      <div class="card anim4">
+        <h3 style="font-size:22px;">🔬 Hỗ trợ lab</h3>
+        <p style="margin-top:8px;font-size:18px;">Gợi ý từng bước không đưa lời giải hoàn chỉnh. Giúp học viên kẹt lab.</p>
+        <p style="margin-top:8px;font-size:16px;color:var(--amber);">⚠️ Phải tự thu câu hỏi lab thật.</p>
+      </div>
+      <div class="card anim5">
+        <h3 style="font-size:22px;">📋 Chấm theo tiêu chí</h3>
+        <p style="margin-top:8px;font-size:18px;">Nhận xét từng tiêu chí, giảng viên duyệt, AI không tự cho điểm cuối.</p>
+        <p style="margin-top:8px;font-size:16px;color:var(--amber);">⚠️ Cần giảng viên hợp tác.</p>
+      </div>
+    </div>
+    <p class="anim6" style="margin-top:16px;font-size:18px;color:var(--red);">❌ A6 thường khó hơn vì phải tự thu mọi dữ liệu — đề nghe hay nhưng kiểm tra kỹ: ai trong khoá thật sự gặp pain này?</p>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 11: REC ════════════════════════ -->
+  <div class="slide" id="rec">
+    <p class="eyebrow anim0">Khuyến nghị cho Aurora</p>
+    <h2 class="anim1" style="margin-top:8px;">Nên chọn A1 hoặc A2</h2>
+    <div class="row mt24" style="gap:20px;">
+      <div class="card hl-teal anim2" style="flex:1;">
+        <div class="track-id t" style="font-size:48px;">A1</div>
+        <h3 style="font-size:24px;margin-top:8px;color:var(--teal);">Tutor LMS — Khuyên mạnh</h3>
+        <ul style="margin-top:12px;padding-left:20px;">
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">Data BTC có sẵn 1,260 lượt hỏi thật</li>
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">Metric rõ: trích đúng nguồn / từ chối đúng</li>
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">Người dùng ngay trong lớp — phỏng vấn được</li>
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">Lát cắt vừa đủ cho 10h, 4 người</li>
+        </ul>
+      </div>
+      <div class="card hl-teal anim3" style="flex:1;">
+        <div class="track-id t" style="font-size:48px;">A2</div>
+        <h3 style="font-size:24px;margin-top:8px;color:var(--teal);">Discord Bot — Khuyên nếu A1 bị</h3>
+        <ul style="margin-top:12px;padding-left:20px;">
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">Pain logistics rõ ràng, ai cũng thấy</li>
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">Metric đơn giản: đúng nguồn / chuyển TA</li>
+          <li style="font-size:18px;color:var(--fg2);padding:5px 0;">data/training-ops/ làm bộ test được</li>
+          <li style="font-size:18px;color:var(--amber);padding:5px 0;">Cần quan sát Discord để lấy evidence</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card anim4" style="margin-top:20px;border-color:var(--violet);background:linear-gradient(135deg,#1a1560,var(--bg2));">
+      <div class="row" style="align-items:center;gap:16px;">
+        <div>
+          <h3 style="font-size:22px;">Tiêu chí chọn hướng</h3>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-left:auto;">
+          <div class="pill v">Pain rõ có số</div>
+          <div class="pill t">Data sẵn / tiếp cận được</div>
+          <div class="pill a">Metric đo được</div>
+          <div class="pill g">Lát cắt vừa 10h</div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════ SLIDE 12: ROLES ══════════════════════ -->
+  <div class="slide" id="roles">
+    <p class="eyebrow anim0">Phân vai nhóm Aurora</p>
+    <h2 class="anim1" style="margin-top:8px;">4 người · 2 ngày · Hướng A1 (Tutor LMS)</h2>
+    <div class="grid2 mt24">
+      <div class="role-card lead anim2">
+        <div class="role-name">Trần Minh Đức</div>
+        <div class="role-title">Đội trưởng · PM &amp; Data</div>
+        <ul class="role-tasks">
+          <li>🎯 Điều phối nhóm, nộp checkpoint CP1–CP4</li>
+          <li>📊 Đào data preclass → insight pain (chat.csv, events.csv)</li>
+          <li>📄 Viết canvas.md, spec.md §0–§4</li>
+          <li>💬 Phỏng vấn học viên lấy evidence</li>
+        </ul>
+      </div>
+      <div class="role-card anim3">
+        <div class="role-name">Trần Tùng Lâm</div>
+        <div class="role-title">Thành viên · Evidence &amp; Cost</div>
+        <ul class="role-tasks">
+          <li>🔍 Phỏng vấn HV + khảo sát (evidence/)</li>
+          <li>🗂️ Viết evidence/summary.md</li>
+          <li>💰 Mô phỏng chi phí (cost/simulate.py)</li>
+          <li>🎞️ Quay video 30s demo (CP3)</li>
+        </ul>
+      </div>
+      <div class="role-card anim4">
+        <div class="role-name">Trần Thị Nhài</div>
+        <div class="role-title">Thành viên · Eval &amp; Benchmark</div>
+        <ul class="role-tasks">
+          <li>📋 Thiết kế 20–30 câu thử (benchmark.csv)</li>
+          <li>✅ Viết metric_spec.yaml + chuẩn "đạt"</li>
+          <li>🏃 Chạy eval, ghi kết quả lượt 1 → lượt 2</li>
+          <li>📊 Viết eval/report.md</li>
+        </ul>
+      </div>
+      <div class="role-card anim5">
+        <div class="role-name">Ngô Ngọc Hải</div>
+        <div class="role-title">Thành viên · Backend &amp; AI Agent</div>
+        <ul class="role-tasks">
+          <li>🔧 Viết codebase/agent.py + tools.py</li>
+          <li>🤖 Tích hợp model thật (API call)</li>
+          <li>🔁 Chạy run.py, sửa luồng AI</li>
+          <li>📝 Ghi ai-usage.md</li>
+        </ul>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div id="nav">
+  <button id="btn-prev" onclick="go(-1)" title="Trước (←)">←</button>
+  <div id="dots"></div>
+  <span id="slide-counter">1 / 12</span>
+  <button id="btn-next" onclick="go(1)" title="Tiếp (→)">→</button>
+  <button onclick="toggleFS()" title="Toàn màn hình (F)" style="margin-left:4px;font-size:14px;">⛶</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  d.style.cursor = 'pointer';
+  dotsEl.appendChild(d);
+});
+
+function goTo(n) {
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(total - 1, n));
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  document.getElementById('slide-counter').textContent = (cur + 1) + ' / ' + total;
+  // progress bar
+  const pb = slides[cur].querySelector('.progress-bar');
+  if (pb) {
+    pb.style.width = '0%';
+    setTimeout(() => { pb.style.width = ((cur + 1) / total * 100) + '%'; }, 50);
+  }
+}
+function go(d) { goTo(cur + d); }
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F') toggleFS();
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End')  goTo(total - 1);
+});
+
+function toggleFS() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// Scale deck to window
+function scale() {
+  const deck = document.getElementById('deck');
+  const scl = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  deck.style.transform = 'scale(' + scl + ')';
+  deck.style.transformOrigin = 'center center';
+}
+window.addEventListener('resize', scale);
+scale();
+
+// Init
+goTo(0);
+</script>
+</body>
+</html>
