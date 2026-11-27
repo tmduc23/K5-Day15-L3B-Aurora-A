@@ -13,4 +13,4 @@
 | 5 | **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả) | Một học viên · hỏi câu kỹ thuật dưới video Day08 · trợ giảng quyết định trả lời kèm mã đoạn hoặc nói "không có trong bài" · học viên mở đúng đoạn kiểm được ngay |
 | 6 | AI tự làm đến đâu + 1 dòng lý do: sai thì ai chịu gì | AI tự trả lời kèm mã đoạn khi tìm được nguồn rõ ràng (confidence cao); nói "không có trong bài" khi không tìm được — lý do: sai thì học viên học sai kiến thức kỹ thuật, mất thêm giờ TA sửa |
 | 7 | Phân công có tên | Trần Minh Đức: PM + data mining · Trần Tùng Lâm: phỏng vấn HV + evidence/summary.md · Trần Thị Nhài: eval/benchmark.csv + metric_spec.yaml · Ngô Ngọc Hải: codebase/agent.py + tools.py |
-| — | *(CP2)* Đã đổi gì so với CP1 | |
+| — | *(CP2)* Đã đổi gì so với CP1 | Giữ lát cắt; nguồn bài giảng tạm dùng transcript 2 video 3Blue1Brown công khai (39 đoạn có mã) vì data Day08 chưa có trên máy chạy code — sẽ thay trước CP3. Chốt hình dạng workflow cố định 3 bước + chặn trả lời khi không có mã đoạn hợp lệ |
