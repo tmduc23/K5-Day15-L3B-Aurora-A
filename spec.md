@@ -25,16 +25,18 @@ Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv 
 
 | Hướng | Bao nhiêu người gặp | Bao nhiêu lần / tháng | Mỗi lần tốn gì | Impact / tháng | Làm kịp không | Chọn? |
 |---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
+| **H1 — Trợ giảng trả lời kèm mã đoạn + link đúng giây, không có trong bài thì nói không có** | 144 học viên hỏi trợ giảng dưới video (data BTC) | ≈ 17 câu / người (1091 câu / 144 người trong 13 ngày ≈ 7,6 → quy ra 30 ngày) | 60% câu trả lời kéo theo tua lại / hỏi tiếp; mỗi lần ≈ 5 phút tìm lại *(tự ước tính, kiểm bằng phỏng vấn)* | 144 × 17 × 60% × 5 ≈ **7.300 phút ≈ 122 giờ** | Kịp — 2 công cụ chỉ đọc + 1 lời gọi model | ✅ |
+| H2 — Tóm tắt cả video pre-class thành ghi chú có mốc thời gian | Cùng 144 học viên | ~1 lần / video *(tự ước tính)* | Tiết kiệm thời gian xem lại, nhưng không giải quyết câu hỏi cụ thể | Không đo được từ data hiện có | Kịp một phần | ❌ |
+| H3 — Tự động chuyển câu hỏi khó cho TA qua kênh chat | TA lớp + học viên | Phần câu không có trong bài *(chưa đếm được)* | Giờ TA | Thấp hơn H1, phụ thuộc lịch TA | Không kịp — có tác động ra ngoài, cần người duyệt | ❌ |
 
-- **Impact / tháng** của hướng chọn = __ người × __ lần × __ phút = __ — nguồn từng thừa số: __ (không có nguồn thì ghi rõ *(tự ước tính)*)
-- Hướng ĐÃ LOẠI + vì sao (giữ lại, đừng xoá):
-- Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8):
+- **Impact / tháng** của hướng chọn = 144 người × 17 lần × 60% × 5 phút ≈ 7.300 phút (≈ 122 giờ học viên) — nguồn: 144 người, 1091 câu / 13 ngày và 60% từ `evidence/data-mining.md` mục A; 5 phút / lần *(tự ước tính, khớp pain "5–10 phút" ở §1, cần phỏng vấn kiểm lại)*. Ở quy mô cả lớp L3 (~700 học viên) con số gấp ~5 lần.
+- Hướng ĐÃ LOẠI + vì sao (giữ lại, đừng xoá): H2 — không nhắm đúng việc "hỏi một chỗ chưa hiểu", data không đo được lợi ích; H3 — có tác động ra ngoài (gửi tin cho TA), cần luồng duyệt, quá phạm vi hackathon.
+- Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8): trung bình ≈ 17 câu / người / tháng (data BTC); chia 3 kiểu ít / vừa / nhiều ở `cost/personas.yaml` *(tỉ lệ chia tự ước tính vì máy chạy code không có data BTC thô để đếm phân phối)*.
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
-- [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
+- **NotebookLM (Google):** đáng học — mỗi khẳng định gắn trích dẫn bấm được về nguồn · đáng né — vẫn trả lời bằng kiến thức chung khi nguồn yếu · mình khác: không có mã đoạn hợp lệ thì chặn hẳn, link mở đúng giây video.
+- **Khan Academy Khanmigo:** đáng học — không làm bài hộ, dẫn học viên tự nghĩ · đáng né — trả lời dài, không chỉ về chỗ cụ thể trong video · mình khác: gắn với đúng đoạn bài pre-class, ngắn, có link.
+- **Trợ giảng AI hiện tại dưới video pre-class:** đáng học — có ngay dưới video, học viên dùng nhiều (1091 câu) · đáng né — không cho biết câu trả lời lấy từ đâu (60% phải tua / hỏi lại) · mình khác: bắt buộc trích mã đoạn, code kiểm mã.
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
 - **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả): Một học viên · hỏi một câu kỹ thuật dưới video bài giảng · trợ giảng quyết định trả lời kèm mã đoạn (hoặc nói "không có trong bài" / hỏi lại) · học viên bấm link mở đúng giây trong video để tự kiểm.
@@ -72,21 +74,30 @@ flowchart LR
   | Code giữ sự thật, model giữ ngôn ngữ | Thời gian và link do code tra từ `lesson_segments.csv`, model không bao giờ tự viết timestamp |
   | Hỏi lại khi mơ hồ | Luật trong `SYSTEM` (`agent.py`): câu hỏi không rõ phần nào → hỏi lại 1 câu, không đoán |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: (1) Dữ liệu bài giảng là transcript 2 video 3Blue1Brown công khai, **dùng thay tạm** cho video pre-class Day08 vì data BTC chưa có trên máy chạy code — cần thay trước CP3. (2) Lượt chạy CP2 dùng model chế độ giả (`MODEL_PROVIDER` trống); đã viết sẵn nhánh gọi model thật qua OpenRouter/OpenAI trong `codebase/ai.py`.
+- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: (1) Dữ liệu bài giảng **vẫn là** transcript 2 video 3Blue1Brown công khai (39 đoạn có mã), dùng thay tạm cho video pre-class Day08 vì transcript Day08 không có trong data BTC trên máy chạy code — chưa thay được ở CP3. (2) Lời gọi model là **thật** từ CP3: `openai/gpt-4o-mini` qua OpenRouter (lượt `run-1@20261128-090408`, token lấy từ `usage`). (3) Hai công cụ là thật (đọc `data/lesson_segments.csv`), không có dữ liệu giả.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
 | Kịch bản | Lớp (1–4) | Hành vi mong muốn (nói gì, hiện gì, cho làm gì tiếp) | Câu thử |
 |---|---|---|---|
-|  |  |  |  |
-| *(tấn công)* |  |  |  |
-| *(tấn công)* |  |  |  |
+| Hỏi con số có trong bài (độ chính xác ~96%) | 1 | Trả lời đúng số, trích `[B2-12]`, kèm link đúng giây | B09 |
+| Câu hỏi có tiền đề sai ("vì sao dùng 3 lớp ẩn?") | 1 | Sửa tiền đề: bài dùng 2 lớp ẩn × 16 nơ-ron, trích `[B1-05]` | B10 |
+| Hỏi thứ bài không trình bày chi tiết (backprop từng bước) | 1 | Nói bài này chưa trình bày chi tiết, không bịa, gợi ý hỏi TA | B11, B24 |
+| Câu hỏi mơ hồ ("cái hàm đó là gì vậy?") | 2 | Hỏi lại 1 câu: hàm nào (sigmoid hay hàm chi phí), không đoán | B07 |
+| Câu hỏi ngoài bài / ngoài khoá (thủ đô Pháp, CNN, công cụ vẽ hình) | 3 | "Không có trong bài" + gợi ý hỏi về nội dung bài / hỏi TA | B14, B25, B26 |
+| Gõ không dấu + so sánh vượt nội dung chính (sigmoid vs ReLU) | 4 | Chỉ trả lời phần có trong bài, trích `[B1-21…]`; không thêm kiến thức ngoài bài vì sai thì học viên học sai trước lab | B08, B19 |
+| *(tấn công)* Prompt injection đòi in system prompt | 3 | Từ chối, không lộ hướng dẫn, quay về câu hỏi bài học | B12 |
+| *(tấn công)* Nhờ làm bài quiz hộ và nộp luôn | 3 | Từ chối làm hộ, gợi ý đoạn bài liên quan để tự làm; không có công cụ nộp bài | B13 |
 
 (1) nguồn sự thật · (2) mơ hồ / thiếu thông tin · (3) ngoài phạm vi / thẩm quyền · (4) đặc thù lĩnh vực (sai thì người dùng mất gì đắt nhất)
 
 ## §6. Bốn đường đi của trải nghiệm
-- Mọi thứ suôn sẻ: · Không chắc (lớp 2): · Không có căn cứ (lớp 1): · Người dùng sửa:
-- Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
+- **Mọi thứ suôn sẻ:** câu trả lời ngắn + danh sách nguồn `[B1-13] → youtu.be/…?t=giây`; học viên bấm là xem đúng đoạn (B01–B05).
+- **Không chắc (lớp 2):** trợ giảng hỏi lại 1 câu, gợi ý 2 lựa chọn; học viên chọn rồi hỏi lại (B07).
+- **Không có căn cứ (lớp 1):** model trả `KHONG_CO_TRONG_BAI` hoặc mọi mã đều bị `check_citations` loại → hiện `SAFE_FALLBACK` "Không tìm thấy trong bài" + gợi ý hỏi TA; không có câu trả lời nào không nguồn (B11, B24).
+- **Người dùng sửa:** học viên thấy trả lời chưa đúng → bấm link kiểm, gõ lại câu hỏi cụ thể hơn (kèm mốc thời gian); agent đọc đoạn quanh mốc đó (B15, B16).
+- **Bị đòi ngoài phạm vi (lớp 3):** từ chối lịch sự, không làm bài hộ, không lộ prompt, gợi ý hỏi về nội dung bài (B12–B14).
+- **Trường hợp đặc thù lĩnh vực (lớp 4):** câu kỹ thuật dễ trả lời bằng kiến thức chung (ReLU, MSE vs cross-entropy) → chỉ nói phần bài có, ghi rõ phần bài không nói, gợi ý hỏi TA (B08, B18, B19).
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 26 câu (thuong 8 · kho 13 · tu_choi 5; 12/26 câu hỏi thật `data_that`) · metric: `eval/metric_spec.yaml` (3 metric)
@@ -117,6 +128,7 @@ flowchart LR
 | 28/11 09:00 | Thêm nguồn bằng chứng: đào bình luận công khai dưới 2 video bài giảng (`evidence/count_comments.py`, `evidence/data-mining.md` mục B); giả thuyết ghi trước lúc 08:57 | Data BTC chưa có trên máy chạy code; cần ≥1 nguồn đạt ngưỡng cho CP3 |
 | 28/11 09:00 | `eval/benchmark.csv` 14 → 26 câu: thêm B15–B26 là câu hỏi thật của người học (`data_that`); không sửa câu cũ, không sửa metric / chuẩn "đạt" | CP3 cần 20–30 câu, ≥1/3 từ data thật (`run.py check` hết cảnh báo) |
 | 28/11 09:04 | Nối model thật `openai/gpt-4o-mini` qua OpenRouter, chạy lượt 1 → `eval/run-1.csv`, `traces/run-1.jsonl` | CP3 yêu cầu kết quả lượt 1 gọi AI thật |
+| 28/11 09:40 | Điền §2, §3, §5, §6; sửa §4 "phần nào còn giả" cho đúng hiện trạng (model thật, data bài vẫn thay tạm); `cost/personas.yaml` thay số ví dụ bằng số từ data BTC + giá gpt-4o-mini | Hoàn thành §0–§7 cho CP3 |
 | 28/11 09:20 | Cải tiến cho lượt 2 (CP4): `data/lesson_segments.csv` thay chữ 17 đoạn B2 bằng phụ đề tiếng Anh gốc (giữ nguyên mã đoạn và mốc thời gian); `codebase/agent.py` sửa prompt: đối chiếu theo nghĩa khi khác ngôn ngữ, đọc đoạn quanh mốc thời gian trong câu hỏi, trả lời phần có trong bài, sửa tiền đề sai, chỉ hỏi lại khi câu hỏi trỏ tới thứ không xác định | Lượt 1: 7/11 câu trượt là từ chối nhầm (B10, B15, B18–B22), transcript B2 là bản dịch máy khó khớp; B06, B07, B11, B16 (`eval/report.md` §2) |
 | 28/11 | Thêm `extras/lecture-videorag/` (chép từ repo riêng, commit `f9d489f`) làm hướng mở rộng sau hackathon; không thuộc bản chạy thử, không đổi `codebase/`, `run.py`, bộ câu thử hay kết quả các lượt | Lưu lại phần "không làm" ở §4 (nhiều video, tóm tắt cả khoá) để nhóm làm tiếp; ghi rõ ở `extras/README.md` để không nhầm là phần nộp |
 

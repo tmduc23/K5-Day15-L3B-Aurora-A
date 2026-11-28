@@ -40,6 +40,6 @@ Khung chỉ dùng thư viện chuẩn của Python. Thêm thư viện thì ghi v
 
 ## Quy ước của nhóm
 
-- Ngôn ngữ trả lời người dùng: __
-- Phong cách code / đặt tên: __
-- Ai duyệt thay đổi do agent tạo trước khi commit: __
+- Ngôn ngữ trả lời người dùng: tiếng Việt (trích mã đoạn dạng `[B1-04]`, giữ nguyên thuật ngữ tiếng Anh)
+- Phong cách code / đặt tên: Python chuẩn PEP 8, chỉ thư viện chuẩn; tên hàm công cụ snake_case tiếng Anh, docstring tiếng Việt
+- Ai duyệt thay đổi do agent tạo trước khi commit: code — Ngô Ngọc Hải; spec / evidence / cost — Trần Minh Đức
