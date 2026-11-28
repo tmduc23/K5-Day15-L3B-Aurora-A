@@ -48,7 +48,9 @@ def check_citations(codes: list) -> dict:
             continue
         valid.append({
             "ma_doan": c,
-            "link": "https://youtu.be/%s?t=%d" % (r["youtube_id"], r["start"]),
+            # youtube_id là mã YouTube, hoặc URL trang pre-class có "{t}" (data/import_transcript.py)
+            "link": (r["youtube_id"].replace("{t}", str(r["start"])) if "{t}" in r["youtube_id"]
+                     else "https://youtu.be/%s?t=%d" % (r["youtube_id"], r["start"])),
             "khoang": "%s–%s" % (fmt_time(r["start"]), fmt_time(r["end"])),
         })
     return {"valid": valid, "invalid": invalid}

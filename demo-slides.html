@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora Demo Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #090D18; --panel: #0F1626; --border: #1E3252; --fg: #E8EDF5; --muted: #93A3BC;
+    --teal: #2DD4BF; --amber: #F59E0B; --red: #F87171; --green: #4ADE80; --violet: #818CF8;
+  }
+  @page { size: 1280px 720px; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', Arial, sans-serif; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .slide {
+    width: 1280px; height: 720px; padding: 56px 72px 48px; position: relative; overflow: hidden;
+    background: radial-gradient(circle at 92% 8%, rgba(45,212,191,.10), transparent 40%), var(--bg);
+    page-break-after: always; break-after: page; display: flex; flex-direction: column;
+  }
+  @media screen { .slide { margin: 24px auto; border: 1px solid var(--border); border-radius: 12px; } }
+  .kicker { font: 600 15px 'Inter'; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  h1, h2 { font-family: 'Space Grotesk', Arial, sans-serif; margin: 0 0 22px; line-height: 1.15; }
+  h1 { font-size: 60px; } h2 { font-size: 38px; }
+  p, li { font-size: 20px; line-height: 1.5; color: var(--fg); }
+  ul { margin: 0; padding-left: 22px; } li { margin-bottom: 8px; }
+  .muted { color: var(--muted); }
+  .src { position: absolute; left: 72px; right: 72px; bottom: 20px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; }
+  .pg { position: absolute; right: 72px; top: 24px; font-size: 13px; color: var(--muted); }
+  .grid { display: grid; gap: 20px; }
+  .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+  .big { font: 700 54px 'Space Grotesk'; line-height: 1; margin-bottom: 8px; }
+  .t { color: var(--teal); } .a { color: var(--amber); } .r { color: var(--red); } .g { color: var(--green); } .v { color: var(--violet); }
+  .card p { font-size: 17px; margin: 0; }
+  blockquote { margin: 0; padding: 14px 20px; border-left: 4px solid var(--teal); background: var(--panel); border-radius: 0 10px 10px 0; font-size: 18px; line-height: 1.5; }
+  blockquote cite { display: block; font-style: normal; font-size: 14px; color: var(--muted); margin-top: 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: 17px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; } th.num { text-align: right; }
+  .flow { display: flex; align-items: stretch; gap: 10px; margin: 6px 0 18px; }
+  .step { flex: 1; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 1.4; }
+  .step b { display: block; font-size: 16px; margin-bottom: 4px; color: var(--teal); }
+  .arrow { align-self: center; color: var(--muted); font-size: 22px; }
+  .bar-row { display: grid; grid-template-columns: 90px 1fr 120px; align-items: center; gap: 14px; margin-bottom: 12px; font-size: 17px; }
+  .bar { height: 28px; background: #16213A; border-radius: 6px; position: relative; }
+  .bar span { display: block; height: 100%; border-radius: 6px; background: var(--teal); }
+  .bar .goal { position: absolute; top: -6px; bottom: -6px; left: 80%; border-left: 2px dashed var(--amber); }
+  .pill { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 14px; font-weight: 600; border: 1px solid currentColor; }
+  .verdict { font: 700 96px 'Space Grotesk'; color: var(--amber); line-height: 1; margin: 4px 0 18px; }
+  pre { margin: 0; font: 14px/1.5 Consolas, monospace; white-space: pre-wrap; color: var(--fg); }
+</style>
+</head>
+<body>
+
+<!-- 0 · Bìa -->
+<section class="slide" style="justify-content:center;">
+  <div class="kicker">AI20K Hackathon · Track A EdTech · Lớp L3B</div>
+  <h1>Trợ giảng pre-class<br><span class="t">trả lời kèm đúng đoạn video</span></h1>
+  <p class="muted" style="font-size:22px;max-width:900px;">Học viên hỏi dưới video → trợ giảng trả lời kèm mã đoạn và link mở đúng giây. Bài không nói thì nói thẳng "không có trong bài".</p>
+  <p style="margin-top:36px;font-size:18px;"><b>Nhóm Aurora</b> — Trần Minh Đức · Trần Tùng Lâm · Trần Thị Nhài · Ngô Ngọc Hải</p>
+  <div class="src">Repo: github.com/tmduc23/K5-Day15-L3B-Aurora-A · mọi số trong slide trỏ về file nguồn ở chân trang</div>
+</section>
+
+<!-- 1 · Người dùng & pain -->
+<section class="slide">
+  <div class="pg">1 / 8</div>
+  <div class="kicker">Người dùng &amp; pain</div>
+  <h2>Học viên hỏi xong vẫn phải tự tua lại để kiểm</h2>
+  <div class="grid g3" style="margin-bottom:22px;">
+    <div class="card"><div class="big t">60%</div><p><b>656 / 1091</b> lượt hỏi trợ giảng dưới video: học viên tua lùi trong 5 phút hoặc hỏi tiếp trong 10 phút (144 học viên)</p></div>
+    <div class="card"><div class="big a">66%</div><p><b>45 / 68</b> câu hỏi về nội dung dưới 2 video bài giảng không ai trả lời; chỉ <b>1 / 23</b> câu trả lời chỉ ra mốc thời gian</p></div>
+    <div class="card"><div class="big v">70%</div><p><b>765 / 1091</b> câu trả lời của trợ giảng hiện tại không dẫn mốc bài nào, dù trang ghi "grounding theo nội dung buổi học". Phỏng vấn: <b>3/4</b> học viên phải tự đối chiếu</p></div>
+  </div>
+  <blockquote>"Tôi mở ChatGPT hỏi về 4 mức hệ thống AI, đọc giải thích nhưng không biết có khớp với định nghĩa trong bài hay không. Phải mất thêm thời gian đối chiếu lại."<cite>Phỏng vấn P4, học viên L3B</cite></blockquote>
+  <div class="src">Nguồn: evidence/data-mining.md mục A, A2 (chat log BTC, count_chat_btc.py, count_time_btc.py) · mục B (bình luận YouTube, count_comments.py) · evidence/interviews/P1–P4.md · tổng hợp evidence/summary.md</div>
+</section>
+
+<!-- 2 · Vì sao chọn -->
+<section class="slide">
+  <div class="pg">2 / 8</div>
+  <div class="kicker">Vì sao chọn bài này</div>
+  <h2>≥ 22 giờ học viên / tháng tự tua lại, hỏi lại</h2>
+  <p style="font-size:24px;margin:0 0 20px;"><b>144</b> người × <b>17</b> câu / tháng × <b>60%</b> phải tìm lại × <b>0,9</b> phút ≈ <b class="t">1.320 phút / tháng</b> (cận dưới)</p>
+  <table>
+    <tr><th>Hướng</th><th>Impact</th><th>Làm kịp?</th><th>Chọn</th></tr>
+    <tr><td><b>H1 — Trả lời kèm mã đoạn + link đúng giây</b></td><td>≥ 22 giờ / tháng (144 người), đo từ data</td><td>Kịp: 2 công cụ chỉ đọc + 1 lời gọi model</td><td class="g"><b>✓</b></td></tr>
+    <tr><td>H2 — Tóm tắt cả video thành ghi chú</td><td>Không đo được từ data</td><td>Một phần</td><td class="r">✗ không nhắm câu hỏi cụ thể</td></tr>
+    <tr><td>H3 — Tự chuyển câu khó cho TA</td><td>Thấp hơn H1, phụ thuộc lịch TA</td><td>Không, có tác động ra ngoài, cần luồng duyệt</td><td class="r">✗</td></tr>
+  </table>
+  <p class="muted" style="font-size:16px;margin-top:16px;">Mọi thừa số đo từ data BTC. 0,9 phút = trung vị thời gian ngay trên trang (cận dưới); phỏng vấn ghi 5–60 phút khi phải tìm cả ngoài trang. Bản CP3 dùng 5 phút tự ước tính.</p>
+  <div class="src">Nguồn: spec.md §2 · 144 người, 1091 câu / 13 ngày, 60%: evidence/data-mining.md mục A · 0,9 phút: mục A2, evidence/count_time_btc.py</div>
+</section>
+
+<!-- 3 · Giải pháp -->
+<section class="slide">
+  <div class="pg">3 / 8</div>
+  <div class="kicker">Giải pháp</div>
+  <h2>Workflow cố định: code giữ sự thật, model giữ ngôn ngữ</h2>
+  <div class="flow">
+    <div class="step"><b>1 · Đọc bài</b>get_lesson_segments: 39 đoạn transcript có mã B1-04…</div><div class="arrow">→</div>
+    <div class="step"><b>2 · Chọn đoạn</b>model #1 chọn ≤6 mã liên quan; code thêm đoạn chứa mốc giờ học viên nhắc</div><div class="arrow">→</div>
+    <div class="step"><b>3 · Trả lời</b>model #2 chỉ đọc các đoạn đã chọn, trích mã; không có thì nói không có</div><div class="arrow">→</div>
+    <div class="step"><b>4 · Kiểm mã</b>check_citations: bỏ mã bịa, đổi mã ra link ?t=giây</div><div class="arrow">→</div>
+    <div class="step"><b>4b · Sửa trích dẫn 1 lần</b>vẫn không có mã hợp lệ → chặn</div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><p><b class="t">AI tự làm khi chắc, chuyển người khi không.</b> Có mã đoạn hợp lệ thì trả lời ngay (học viên bấm link tự kiểm). Không có căn cứ thì không trả lời, gợi ý hỏi TA.</p></div>
+    <div class="card"><p><b class="a">Chặn rủi ro lớn nhất, trả lời bịa:</b> model không được viết timestamp; code bỏ mã không tồn tại; không còn mã hợp lệ thì thay bằng câu "không tìm thấy trong bài".</p></div>
+    <div class="card"><p><b class="v">Vì sao workflow, không agent:</b> luôn đúng 2 lần gọi model (tối đa 3); bài ngắn (~9k token) nên bước chọn đoạn đọc cả bài một lần; agent chỉ thêm chi phí, độ trễ và chỗ sai.</p></div>
+    <div class="card"><p><b class="r">Không làm:</b> trả lời ngoài bài · làm quiz hộ, chấm điểm · tự nhắn TA · tóm tắt cả khoá.</p></div>
+  </div>
+  <div class="src">Nguồn: spec.md §4 (sơ đồ Mermaid, nguyên tắc thiết kế) · codebase/agent.py, codebase/tools.py</div>
+</section>
+
+<!-- 4 · Demo -->
+<section class="slide">
+  <div class="pg">4 / 8</div>
+  <div class="kicker">Demo live · python run.py</div>
+  <h2>Một câu thường, một câu khó</h2>
+  <div class="grid g2">
+    <div class="card">
+      <span class="pill t">Thường · B01</span>
+      <p style="margin:12px 0 8px;"><b>"Trong bài, một nơ-ron được hiểu đơn giản là gì?"</b></p>
+      <pre>Một "thứ" giữ một số trong khoảng 0–1,
+gọi là activation [B1-04].
+
+Nguồn trong video:
+- [B1-04] → youtu.be/aircAruvnKk?t=…</pre>
+      <p class="muted" style="margin-top:10px;font-size:15px;">Bấm link → mở đúng giây trong video để tự kiểm</p>
+    </div>
+    <div class="card">
+      <span class="pill a">Khó · B10, tiền đề sai</span>
+      <p style="margin:12px 0 8px;"><b>"Vì sao mạng trong bài dùng 3 lớp ẩn?"</b></p>
+      <pre>Bài dùng 2 lớp ẩn, mỗi lớp 16 nơ-ron,
+không phải 3 [B1-05].</pre>
+      <span class="pill r" style="margin-top:14px;">Ngoài bài · B14</span>
+      <p style="margin:8px 0 0;font-size:16px;"><b>"Thủ đô của Pháp là gì?"</b> → "Không có trong bài… Bạn có thể hỏi TA trong buổi lab."</p>
+    </div>
+  </div>
+  <p class="muted" style="font-size:16px;margin-top:18px;">Mạng hỏng → phát video dự phòng (link ở README.md, mục 7).</p>
+  <div class="src">Nguồn: output thật, eval/run-3.csv và eval/run-4.csv (B01, B10, B14) · model openai/gpt-4o-mini qua OpenRouter</div>
+</section>
+
+<!-- 5 · Đánh giá -->
+<section class="slide">
+  <div class="pg">5 / 8</div>
+  <div class="kicker">Đánh giá thế nào</div>
+  <h2>26 câu thử · chuẩn "đạt" chốt từ CP2 · lượt 4 đạt</h2>
+  <div class="grid g2" style="grid-template-columns: 1.05fr 1fr;">
+    <div>
+      <p style="font-size:17px;margin:0 0 10px;"><b>Bộ câu thử:</b> 26 câu (thường 8 · khó 13 · từ chối 5, gồm 2 câu tấn công); <b>12/26</b> là câu hỏi thật của người học. <b>3 metric:</b> trích đúng nguồn · nội dung đúng · từ chối đúng.</p>
+      <p style="font-size:17px;margin:0 0 18px;"><b>Chuẩn "đạt":</b> ≥80% câu qua <b>và</b> 0 mã đoạn bịa <b>và</b> 100% câu từ chối qua.</p>
+      <div class="bar-row"><span>Lượt 1</span><div class="bar"><span style="width:58%"></span><i class="goal"></i></div><span><b>15/26</b> · 58%</span></div>
+      <div class="bar-row"><span>Lượt 2</span><div class="bar"><span style="width:69%"></span><i class="goal"></i></div><span><b>18/26</b> · 69%</span></div>
+      <div class="bar-row"><span>Lượt 3</span><div class="bar"><span style="width:73%"></span><i class="goal"></i></div><span><b>19/26</b> · 73%</span></div>
+      <div class="bar-row"><span><b>Lượt 4</b></span><div class="bar"><span style="width:88%;background:var(--green)"></span><i class="goal"></i></div><span><b class="g">23/26 · 88%</b></span></div>
+      <p class="muted" style="font-size:14px;margin:4px 0 0;"><span class="a">┆</span> vạch 80% = chuẩn "đạt" · cả 4 lượt: từ chối đúng 5/5, <b class="g">0 mã bịa</b> · lượt 4 đạt cả 3 điều kiện</p>
+    </div>
+    <div>
+      <table>
+        <tr><th>Còn trượt (lượt 4)</th><th class="num">Câu</th></tr>
+        <tr><td><b class="a">Từ chối nhầm</b>: bài có nội dung nhưng nói "không có" (B20)</td><td class="num">1</td></tr>
+        <tr><td><b class="r">Có mã nhưng thiếu ý / trích nhầm đoạn</b>, nguy hiểm hơn vì dễ tin (B15, B19)</td><td class="num">2</td></tr>
+        <tr><td>Bịa mã đoạn lọt tới học viên</td><td class="num g">0</td></tr>
+      </table>
+      <p style="font-size:15px;margin-top:14px;" class="muted">Lượt 2: phụ đề gốc + sửa prompt. Lượt 3: 2 bước tự kiểm (+1 câu, chi phí +63%). Lượt 4: tách <b>chọn đoạn → trả lời</b>, +4 câu và rẻ hơn lượt 3. 88% mới là 1 lượt, chưa đo độ dao động.</p>
+    </div>
+  </div>
+  <div class="src">Nguồn: eval/report.md · eval/README.md · run ID run-1@20261128-090408 · run-2@20261128-092049 · run-3@20261128-120824 · run-4@20261128-123056 · chuẩn "đạt": spec.md §7</div>
+</section>
+
+<!-- 6 · Chi phí -->
+<section class="slide">
+  <div class="pg">6 / 8</div>
+  <div class="kicker">Chi phí khi dùng thật</div>
+  <h2>Dưới 2 cent / người / tháng: chi phí không phải nút thắt</h2>
+  <div class="grid g2" style="grid-template-columns: 1.3fr 1fr;">
+    <div>
+      <table>
+        <tr><th>Model</th><th class="num">/ task thành công</th><th class="num">Thấp (144)</th><th class="num">Cơ sở (361)</th><th class="num">Cao (721)</th></tr>
+        <tr><td><b class="t">gpt-4o-mini</b></td><td class="num">$0,0045</td><td class="num">$2,50</td><td class="num">$6,27</td><td class="num">$12,53</td></tr>
+        <tr><td>Claude Sonnet 5.5</td><td class="num">$0,0609</td><td class="num">$33,70</td><td class="num">$84,49</td><td class="num">$168,74</td></tr>
+      </table>
+      <p class="muted" style="font-size:15px;margin-top:12px;">/ tháng theo số học viên dùng thật. Chi phí / task thành công = chi phí / phiên ÷ tỉ lệ đạt 88% (lượt 4), không coi như đạt 100%.</p>
+    </div>
+    <div class="card">
+      <div class="big t">$0,017</div>
+      <p>/ người / tháng (gpt-4o-mini, cơ sở), đổi lấy <b>≥ 9 phút</b> / người / tháng không phải tự tua lại, hỏi lại (cận dưới đo từ data).</p>
+      <p class="muted" style="margin-top:12px;font-size:15px;">Phần lớn chi phí là token vào của bước chọn đoạn (đọc cả 39 đoạn). Chọn đoạn bằng code thay vì model sẽ cắt tiếp.</p>
+    </div>
+  </div>
+  <div class="src">Nguồn: cost/simulate-3.csv (50 phiên, seed 42, đo trên code lượt 4) · cost/personas.yaml (persona đo từ data BTC) · cost/cost-estimate.md · giá: bảng giá BTC 25/11/2026</div>
+</section>
+
+<!-- 7 · Kết luận -->
+<section class="slide">
+  <div class="pg">7 / 8</div>
+  <div class="kicker">Kết luận</div>
+  <div class="verdict">GO <span style="font-size:40px;color:var(--muted)">· thử với 1 lớp</span></div>
+  <div class="grid g3">
+    <div class="card"><p><b class="g">Pain có thật:</b> 60% lượt hỏi kéo theo tua lại / hỏi tiếp; 70% câu trả lời hiện không có mốc nào (trang 1).</p></div>
+    <div class="card"><p><b class="g">Đạt chuẩn:</b> 88% ≥ 80%, 0 mã bịa, từ chối đúng 5/5 (trang 5). Mới là 1 lượt.</p></div>
+    <div class="card"><p><b class="t">Chi phí không cản:</b> $0,017 / người / tháng với gpt-4o-mini (trang 6).</p></div>
+  </div>
+  <p style="margin-top:24px;">Điều kiện trước khi mở rộng: thay transcript tạm bằng video pre-class thật, chạy lặp ≥3 lần để chắc 88% không phải may, và để TA xem 2 câu có mã nhưng thiếu ý (B15, B19).</p>
+  <div class="src">Nguồn: trang 1, 5, 6 · eval/report.md §4</div>
+</section>
+
+<!-- 8 · Nếu có thêm 1 tuần -->
+<section class="slide">
+  <div class="pg">8 / 8</div>
+  <div class="kicker">Nếu có thêm 1 tuần</div>
+  <h2>Ba việc, mỗi việc nhắm một lỗi đã đo</h2>
+  <div class="grid g3">
+    <div class="card"><div class="big t" style="font-size:40px;">1</div><p><b>Thay transcript tạm bằng phụ đề video pre-class thật</b> (nút CC trên trang có sẵn phụ đề; <code>data/import_transcript.py</code> đã sẵn) và thêm câu thử từ câu hỏi thật của học viên L3B.</p></div>
+    <div class="card"><div class="big a" style="font-size:40px;">2</div><p><b>Kiểm từng khẳng định có nằm trong đoạn được trích</b>, không chỉ kiểm mã có tồn tại. Nhắm 2 câu có mã nhưng thiếu ý / trích nhầm (B15, B19), loại lỗi nguy hiểm nhất.</p></div>
+    <div class="card"><div class="big v" style="font-size:40px;">3</div><p><b>Chạy lặp mỗi cấu hình ≥3 lần</b> để đo độ dao động (B06 qua / trượt giữa các lượt), và <b>chọn đoạn bằng code</b> thay model #1 để cắt chi phí.</p></div>
+  </div>
+  <div class="src">Nguồn: eval/report.md §3c, §4 · spec.md §4 · data/import_transcript.py</div>
+</section>
+
+</body>
+</html>

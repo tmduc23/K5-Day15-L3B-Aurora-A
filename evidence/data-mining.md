@@ -37,6 +37,33 @@ và **(B) bình luận công khai dưới 2 video bài giảng** đang dùng là
 
 "Hỏi tiếp" có thể là học viên tò mò hỏi thêm chứ không phải câu trả lời chưa đủ; "tua lùi" có thể vì lý do khác câu trả lời. Data cho biết **họ làm gì sau khi nhận trả lời**, không cho biết **vì sao** → kiểm lại bằng phỏng vấn (hỏi: lần gần nhất nhận trả lời của trợ giảng, bạn làm gì tiếp, có tua lại video không, vì sao).
 
+## A2. Chat log BTC — trợ giảng có trích mốc bài không, và học viên mất bao lâu (`evidence/count_time_btc.py`)
+
+### 1. Cách đếm — viết trước khi chạy (28/11 12:40, định nghĩa ở đầu script)
+
+- Cùng tập đếm N = 1091 như mục A. Thêm khoá `moc_trich_dan` của sự kiện `agent_replied` (mốc giây trong bài mà trợ giảng AI dẫn ra, dạng `…@194`). Trước đây nhóm tưởng không đếm được giả thuyết CP1 vì data không có chữ câu trả lời; khoá này cho đếm trực tiếp.
+- **Phút mất mỗi lần phải tìm lại** (thay số "5 phút tự ước tính" ở `spec.md` §2): với 656 lượt phải tua lùi / hỏi tiếp — nếu hỏi tiếp: từ lúc nhận trả lời tới câu hỏi kế; nếu chỉ tua lùi: từ lúc nhận trả lời tới lúc tua + độ dài đoạn tua lùi. Là **cận dưới**: không tính thời gian đọc trả lời, không tính tìm ngoài trang (Google, hỏi bạn).
+- Mục (4) — tua tới gần mốc được trích (±15 giây) hay chỗ khác — viết **sau** khi thấy kết quả (1)–(3), không phải giả thuyết đặt trước.
+
+### 2. Kết quả
+
+| Đếm | x / N | % / trung vị |
+|---|---|---|
+| Câu trả lời **không trích mốc bài nào** | **765 / 1091** | **70%** — giả thuyết CP1 (≥30%) **đúng** |
+| Phút mất mỗi lần phải tìm lại (cận dưới) | n = 656 | trung vị **0,9 phút** (Q1 0,5 · Q3 2,2) |
+| — từ lúc nhận trả lời tới câu hỏi tiếp | n = 548 | trung vị 0,7 phút |
+| — từ lúc nhận trả lời tới lúc tua lùi · độ dài đoạn tua | n = 199 | 2,3 phút · 0,3 phút video |
+| Trả lời **có** trích mốc vẫn phải tua lùi / hỏi tiếp | 207 / 326 | 63% |
+| Trả lời **không** trích mốc phải tua lùi / hỏi tiếp | 449 / 765 | 59% |
+| Có trích mốc rồi vẫn tua lùi: tới **đúng mốc được trích** (±15 s) | 30 / 84 | 36% (10 lần bấm link) |
+| — tới chỗ khác trong video | 54 / 84 | 64% |
+
+### 3. Đọc kết quả — kể cả phần ngược ý nhóm
+
+- Trợ giảng hiện tại ghi "câu trả lời được grounding theo nội dung buổi học" nhưng **70%** câu trả lời không dẫn mốc nào trong bài → học viên không có chỗ để tự kiểm.
+- **Ngược kỳ vọng:** câu trả lời có trích mốc **không** làm giảm việc tua lại / hỏi tiếp (63% so với 59%). Trong số vẫn tua lại, chỉ 36% tới đúng mốc được trích, 64% đi tìm chỗ khác → suy luận (chưa chứng minh): mốc trích hiện tại thường không trúng đoạn học viên cần, nên kiểm mã đoạn bằng code + link đúng đoạn (`spec.md` §4) mới là phần quan trọng, không chỉ "có trích".
+- Số phút đo được **nhỏ hơn nhiều** ước tính 5 phút: đây là thời gian ngay trên trang; phỏng vấn ghi lần gần nhất mất 5–60 phút (P1 5, P4 30, P2 30–60) vì tính cả tìm ngoài trang. Nhóm dùng **0,9 phút làm số chính (bảo thủ)**, phỏng vấn làm cận trên.
+
 ## B. Bình luận YouTube dưới 2 video bài giảng
 
 ### 1. Cách đếm — viết TRƯỚC khi chạy (giả thuyết ở `evidence/hypothesis.md`, 08:57 28/11)

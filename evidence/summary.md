@@ -17,6 +17,7 @@ Giả thuyết viết trước khi đào: `evidence/hypothesis.md` (CP1 17:00 27
 
 - **Đào data — chat log BTC:** sau khi trợ giảng AI trả lời câu hỏi dưới video, **656/1091 (60%)** lượt học viên tua lùi video trong 5 phút (**199/1091, 18%**) hoặc hỏi tiếp trợ giảng trong 10 phút (**548/1091, 50%**) — 144 học viên, Day01–Day13.
 - **Đào data — bình luận dưới 2 video bài giảng:** **45/68 (66%)** câu hỏi về nội dung bài không ai trả lời; trong 23 câu có trả lời, chỉ **1/23 (4%)** câu trả lời chỉ ra mốc thời gian trong video; tác giả video trả lời 2/68 (3%).
+- **Đào data — chat log BTC, trích dẫn và thời gian** (`evidence/count_time_btc.py`, `data-mining.md` mục A2): **765/1091 (70%)** câu trả lời của trợ giảng AI không dẫn mốc bài nào (giả thuyết CP1 ≥30% đúng). Mỗi lần phải tìm lại mất trung vị **0,9 phút** ngay trên trang (cận dưới). Ngược kỳ vọng: trả lời có trích mốc vẫn bị tua lại / hỏi tiếp 63% (không trích: 59%); khi vẫn tua, chỉ 30/84 (36%) tua tới đúng mốc được trích.
 - **Phỏng vấn (4 học viên L3B ngoài nhóm, 28/11)** — n nhỏ nên ghi x/4, không ghi %:
   - **3/4** người gặp chỗ vướng: phải tự đối chiếu câu trả lời với bài — tua lại video để xác nhận (P1, P3) hoặc tìm YouTube / bài báo vì không biết câu trả lời có khớp định nghĩa trong bài không (P4); **1/4** dùng luôn câu trả lời (P2).
   - Lần gần nhất có tua lại video: 3/4 (P1, P2, P3).

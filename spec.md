@@ -18,18 +18,18 @@ Data BTC cấp đã dùng: data/preclass/ — chat.csv, events.csv, learners.csv
 - Người dùng chính: Học viên L3B tự học video pre-class trước buổi (không có TA bên cạnh)
 - Việc họ cố làm xong: Hiểu đúng một khái niệm kỹ thuật trong bài trước buổi học sáng hôm sau
 - Hôm nay họ giải bằng gì, hỏng ở đâu: Hỏi trợ giảng AI — nhưng câu trả lời không rõ lấy từ đâu trong bài, học viên không tự kiểm được; chưa bỏ vì không có lựa chọn khác
-- Pain: Học viên — đang hỏi câu kỹ thuật dưới video pre-class — không biết câu trả lời có căn cứ trong bài không — học sai kiến thức hoặc mất thêm 5–10 phút tìm lại thủ công
-- Bằng chứng — số chính (CP3, chi tiết `evidence/data-mining.md`): (A) chat log BTC: sau khi trợ giảng AI trả lời câu hỏi dưới video, **656/1091 (60%)** lượt học viên tua lùi video trong 5 phút (199/1091, 18%) hoặc hỏi tiếp trong 10 phút (548/1091, 50%) — 144 học viên. (B) bình luận công khai dưới 2 video bài giảng: **45/68 (66%)** câu hỏi về nội dung bài không ai trả lời; chỉ 1/23 câu trả lời chỉ mốc thời gian trong video. Giả thuyết CP1 (≥30% câu trả lời không trích đoạn) không đếm được vì data BTC không có chữ câu trả lời.
+- Pain: Học viên — đang hỏi câu kỹ thuật dưới video pre-class — không biết câu trả lời có căn cứ trong bài không — học sai kiến thức hoặc phải tự tua lại / hỏi lại (đo được: trung vị 0,9 phút ngay trên trang mỗi lần; phỏng vấn: 5–60 phút khi phải tìm cả ngoài trang)
+- Bằng chứng — số chính (CP3, chi tiết `evidence/data-mining.md`): (A) chat log BTC: sau khi trợ giảng AI trả lời câu hỏi dưới video, **656/1091 (60%)** lượt học viên tua lùi video trong 5 phút (199/1091, 18%) hoặc hỏi tiếp trong 10 phút (548/1091, 50%) — 144 học viên. (B) bình luận công khai dưới 2 video bài giảng: **45/68 (66%)** câu hỏi về nội dung bài không ai trả lời; chỉ 1/23 câu trả lời chỉ mốc thời gian trong video. (C) **Giả thuyết CP1 kiểm được** qua khoá `moc_trich_dan` của data BTC: **765/1091 (70%)** câu trả lời không dẫn mốc bài nào (`evidence/count_time_btc.py`, `data-mining.md` mục A2). Phỏng vấn P1–P4: 3/4 học viên phải tự đối chiếu câu trả lời với bài.
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
 | Hướng | Bao nhiêu người gặp | Bao nhiêu lần / tháng | Mỗi lần tốn gì | Impact / tháng | Làm kịp không | Chọn? |
 |---|---|---|---|---|---|---|
-| **H1 — Trợ giảng trả lời kèm mã đoạn + link đúng giây, không có trong bài thì nói không có** | 144 học viên hỏi trợ giảng dưới video (data BTC) | ≈ 17 câu / người (1091 câu / 144 người trong 13 ngày ≈ 7,6 → quy ra 30 ngày) | 60% câu trả lời kéo theo tua lại / hỏi tiếp; mỗi lần ≈ 5 phút tìm lại *(tự ước tính, kiểm bằng phỏng vấn)* | 144 × 17 × 60% × 5 ≈ **7.300 phút ≈ 122 giờ** | Kịp — 2 công cụ chỉ đọc + 1 lời gọi model | ✅ |
+| **H1 — Trợ giảng trả lời kèm mã đoạn + link đúng giây, không có trong bài thì nói không có** | 144 học viên hỏi trợ giảng dưới video (data BTC) | ≈ 17 câu / người (1091 câu / 144 người trong 13 ngày ≈ 7,6 → quy ra 30 ngày) | 60% câu trả lời kéo theo tua lại / hỏi tiếp; mỗi lần trung vị **0,9 phút** trên trang (đo từ data, cận dưới); phỏng vấn 5–60 phút | 144 × 17 × 60% × 0,9 ≈ **1.320 phút ≈ 22 giờ** (cận dưới) | Kịp — 2 công cụ chỉ đọc + 1 lời gọi model | ✅ |
 | H2 — Tóm tắt cả video pre-class thành ghi chú có mốc thời gian | Cùng 144 học viên | ~1 lần / video *(tự ước tính)* | Tiết kiệm thời gian xem lại, nhưng không giải quyết câu hỏi cụ thể | Không đo được từ data hiện có | Kịp một phần | ❌ |
 | H3 — Tự động chuyển câu hỏi khó cho TA qua kênh chat | TA lớp + học viên | Phần câu không có trong bài *(chưa đếm được)* | Giờ TA | Thấp hơn H1, phụ thuộc lịch TA | Không kịp — có tác động ra ngoài, cần người duyệt | ❌ |
 
-- **Impact / tháng** của hướng chọn = 144 người × 17 lần × 60% × 5 phút ≈ 7.300 phút (≈ 122 giờ học viên) — nguồn: 144 người, 1091 câu / 13 ngày và 60% từ `evidence/data-mining.md` mục A; 5 phút / lần *(tự ước tính, khớp pain "5–10 phút" ở §1, cần phỏng vấn kiểm lại)*. Ở quy mô cả lớp L3 (~700 học viên) con số gấp ~5 lần.
+- **Impact / tháng** của hướng chọn = 144 người × 17 lần × 60% × **0,9 phút** ≈ **1.320 phút ≈ 22 giờ học viên** (≈ 9 phút / người / tháng) — **mọi thừa số đo từ data BTC**: 144 người, 1091 câu / 13 ngày, 60% (`evidence/data-mining.md` mục A); 0,9 phút = trung vị thời gian từ lúc nhận trả lời tới lúc hỏi lại / tua lại xong (mục A2, `evidence/count_time_btc.py`). Đây là **cận dưới**: chưa tính tìm ngoài trang — phỏng vấn ghi 5–60 phút cho lần gần nhất (P1, P2, P4). Bản CP3 dùng 5 phút *(tự ước tính)* → 122 giờ; đã thay bằng số đo. Ngoài thời gian: 70% câu trả lời hiện không dẫn mốc nào; 1/4 học viên phỏng vấn từng làm sai lab vì tin câu trả lời (P3).
 - Hướng ĐÃ LOẠI + vì sao (giữ lại, đừng xoá): H2 — không nhắm đúng việc "hỏi một chỗ chưa hiểu", data không đo được lợi ích; H3 — có tác động ra ngoài (gửi tin cho TA), cần luồng duyệt, quá phạm vi hackathon.
 - Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8): trung bình ≈ 17 câu / người / tháng (data BTC); chia 3 kiểu ở `cost/personas.yaml`, **đo từ data BTC** (`evidence/count_usage_btc.py`): hỏi ít 84/144 người, trung vị 1,5 phiên / tháng · hỏi vừa 47/144, 6,1 phiên · hỏi nhiều 13/144, 16,8 phiên; ~2 câu / phiên (data trải 19,7 ngày, 05–25/11).
 
@@ -45,16 +45,19 @@ Data BTC cấp đã dùng: data/preclass/ — chat.csv, events.csv, learners.csv
 
 ```mermaid
 flowchart LR
-    Q[Câu hỏi của học viên] --> T1[get_lesson_segments<br/>đọc đoạn transcript có mã B1-04…]
-    T1 --> M[call_model<br/>trả lời CHỈ từ các đoạn,<br/>trích mã đoạn, hoặc KHONG_CO_TRONG_BAI]
+    Q[Câu hỏi của học viên] --> T1[get_lesson_segments<br/>39 đoạn transcript có mã B1-04…]
+    T1 --> S[Chọn đoạn — call_model #1<br/>≤6 mã liên quan hoặc KHONG<br/>+ code thêm đoạn chứa mốc giờ trong câu hỏi, đoạn kề ±1]
+    S --> M[Trả lời — call_model #2<br/>CHỈ từ các đoạn đã chọn, trích mã,<br/>hoặc KHONG_CO_TRONG_BAI]
+    S -->|không chọn được đoạn nào| M
     M -->|KHONG_CO_TRONG_BAI| R1[Không có trong bài<br/>+ gợi ý hỏi TA]
     M -->|có mã đoạn| T2[check_citations<br/>mã có thật? đổi ra link ?t=giây]
-    T2 -->|còn ≥1 mã hợp lệ| A[Trả lời + danh sách nguồn<br/>link YouTube đúng giây]
-    T2 -->|không mã nào hợp lệ| R2[Chặn: không trả lời,<br/>nói không tìm thấy + gợi ý hỏi TA]
+    T2 -->|còn ≥1 mã hợp lệ| A[Trả lời + danh sách nguồn<br/>link đúng giây]
+    T2 -.->|không mã hợp lệ lần đầu| FX[Yêu cầu sửa trích dẫn 1 lần] -.-> T2
+    T2 -->|vẫn không mã nào hợp lệ| R2[Chặn: không trả lời,<br/>nói không tìm thấy + gợi ý hỏi TA]
     M -->|câu hỏi mơ hồ| H[Hỏi lại học viên 1 câu]
 ```
 
-- **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent — Luồng luôn là đọc đoạn → model trả lời theo mã → code kiểm mã, không cần AI tự chọn bước. Bài giảng ngắn (39 đoạn ≈ 12k token) nên đưa hết vào context, không cần vòng lặp tìm kiếm; agent hay nhiều agent chỉ thêm chi phí, độ trễ và chỗ sai mà không thêm độ chính xác trích dẫn.
+- **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent — Luồng luôn là đọc đoạn → model trả lời theo mã → code kiểm mã, không cần AI tự chọn bước. Bài giảng ngắn (39 đoạn ≈ 9k token) nên bước chọn đoạn đọc được cả bài trong một lần gọi, không cần vòng lặp tìm kiếm; agent hay nhiều agent chỉ thêm chi phí, độ trễ và chỗ sai mà không thêm độ chính xác trích dẫn.
 - **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
@@ -63,6 +66,7 @@ flowchart LR
   | `check_citations` | danh sách mã đoạn model trích | `{valid: [{ma_doan, link ?t=giây, khoang thời gian}], invalid: [mã bịa]}` | Không (chỉ đọc) |
 
 - **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — Có mã đoạn hợp lệ thì trả lời ngay (học viên tự kiểm bằng link, sửa rẻ); không có căn cứ thì không trả lời mà chuyển sang TA. Sai thì học viên học sai kiến thức trước buổi lab và TA mất giờ sửa, nên không cho AI trả lời khi không có nguồn.
+- **Bước chọn đoạn (lượt 4) và bước sửa trích dẫn (lượt 3):** model #1 chỉ chọn mã đoạn liên quan; code thêm đoạn chứa mốc thời gian học viên nhắc và đoạn kề; model #2 trả lời chỉ trên các đoạn đó (không chọn được đoạn nào thì trả lời trên cả bài để model tự quyết từ chối / hỏi lại). Câu trả lời không còn mã hợp lệ → gọi lại 1 lần yêu cầu ghi mã đúng (nét đứt). Luồng vẫn cố định: 2 lần gọi model / câu, tối đa 3. Bước "rà lại trước khi từ chối" của lượt 3 đã bỏ vì không cứu được câu nào (`eval/report.md` §3b).
 - **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì): Rủi ro lớn nhất là trả lời bịa hoặc trích nguồn sai. Chặn ở `check_citations` + `agent.py`: model không được viết thời gian, chỉ trích mã; code bỏ mã không tồn tại, đổi mã ra link đúng giây; câu trả lời không còn mã hợp lệ nào thì bị thay bằng câu "không tìm thấy trong bài".
 - **Chỗ người duyệt** (việc AI không được tự làm): báo lỗi nội dung bài giảng, trả lời câu hỏi ngoài bài, chấm điểm / làm bài tập — AI chỉ gợi ý học viên hỏi TA; TA quyết định.
 - **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
@@ -74,7 +78,7 @@ flowchart LR
   | Code giữ sự thật, model giữ ngôn ngữ | Thời gian và link do code tra từ `lesson_segments.csv`, model không bao giờ tự viết timestamp |
   | Hỏi lại khi mơ hồ | Luật trong `SYSTEM` (`agent.py`): câu hỏi không rõ phần nào → hỏi lại 1 câu, không đoán |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: (1) Dữ liệu bài giảng **vẫn là** transcript 2 video 3Blue1Brown công khai (39 đoạn có mã), dùng thay tạm cho video pre-class Day08 vì transcript Day08 không có trong data BTC trên máy chạy code — chưa thay được ở CP3. (2) Lời gọi model là **thật** từ CP3: `openai/gpt-4o-mini` qua OpenRouter (lượt `run-1@20261128-090408`, token lấy từ `usage`). (3) Hai công cụ là thật (đọc `data/lesson_segments.csv`), không có dữ liệu giả.
+- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật: (1) Dữ liệu bài giảng **vẫn là** transcript 2 video 3Blue1Brown công khai (39 đoạn có mã), dùng thay tạm cho video pre-class Day08 ("from-workflows-to-agents", 6 video ~22 phút): data BTC chỉ có tên file transcript (`Day08/d08-r1-v01.txt`…), không có nội dung. Đã có `data/import_transcript.py` nhập phụ đề .srt / .vtt từ trang pre-class và `tools.py` tạo link đúng giây trên trang; thay khi lấy được phụ đề (thêm làm bài mới + câu thử mới, không sửa 26 câu cũ). (2) Lời gọi model là **thật** từ CP3: `openai/gpt-4o-mini` qua OpenRouter (lượt `run-1@20261128-090408`, token lấy từ `usage`). (3) Hai công cụ là thật (đọc `data/lesson_segments.csv`), không có dữ liệu giả.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -102,13 +106,13 @@ flowchart LR
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 26 câu (thuong 8 · kho 13 · tu_choi 5; 12/26 câu hỏi thật `data_that`) · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ 80% câu qua, và 0 mã đoạn bịa trong toàn bộ lượt chạy, và 100% câu tu_choi qua"
-- Kết quả: lượt 1 15/26 (58%, chưa đạt: cần ≥80%; tu_choi 5/5, 0 mã bịa) · lượt 2 18/26 (69%, chưa đạt; tu_choi 5/5, 0 mã bịa) — run ID: run-1@20261128-090408 / run-2@20261128-092049 → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
+- Kết quả: lượt 1 15/26 (58%, chưa đạt: cần ≥80%; tu_choi 5/5, 0 mã bịa) · lượt 2 18/26 (69%, chưa đạt; tu_choi 5/5, 0 mã bịa) · lượt 3 19/26 (73%, chưa đạt) · **lượt 4 23/26 (88%) — ĐẠT chuẩn** (≥80%, tu_choi 5/5, 0 mã bịa) — run ID: run-1@20261128-090408 / run-2@20261128-092049 / run-3@20261128-120824 / **run-4@20261128-123056** → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
-- Persona + giá: `cost/personas.yaml` (3 persona đo từ data BTC; gpt-4o-mini và Claude Sonnet 5.5 từ bảng giá BTC 25/11/2026) · lượt mô phỏng: `cost/simulate-1.csv` (50 phiên, seed 42, tỉ lệ đạt từ `run-2@20261128-092049`)
-- Chi phí / task thành công: **$0,0042** (gpt-4o-mini) · **$0,0561** (Claude Sonnet 5.5)
-- Chi phí / tháng ở quy mô thật (gpt-4o-mini): thấp $1,82 (144 người) · cơ sở $4,57 (361 người) · cao $9,14 (721 người); Sonnet 5.5: $24,58 · $61,62 · $123,08 → chi tiết `cost/cost-estimate.md`
-- So với impact / người / tháng (§2): đáng làm — ~$0,013 / người / tháng (gpt-4o-mini, cơ sở) so với ~50 phút / người / tháng học viên đang mất để tìm lại (§2, phút là tự ước tính). Điều kiện: tỉ lệ đạt mới 69% (< 80% chuẩn), nên cần lượt cải tiến tiếp trước khi dùng thật; chi phí không phải nút thắt.
+- Persona + giá: `cost/personas.yaml` (3 persona đo từ data BTC; gpt-4o-mini và Claude Sonnet 5.5 từ bảng giá BTC 25/11/2026) · lượt mô phỏng nộp: **`cost/simulate-3.csv`** (50 phiên, seed 42, code lượt 4, tỉ lệ đạt từ `run-4@20261128-123056`); bản trước `simulate-2` (code lượt 3), `simulate-1` (code lượt 2) giữ để so sánh
+- Chi phí / task thành công: **$0,0045** (gpt-4o-mini) · **$0,0609** (Claude Sonnet 5.5) — lượt 3: $0,0059 · lượt 2: $0,0042
+- Chi phí / tháng ở quy mô thật (gpt-4o-mini): thấp $2,50 (144 người) · cơ sở **$6,27** (361 người) · cao $12,53 (721 người); Sonnet 5.5: $33,70 · $84,49 · $168,74 → chi tiết `cost/cost-estimate.md`
+- So với impact / người / tháng (§2): đáng làm — ~$0,017 / người / tháng (gpt-4o-mini, cơ sở) so với **≥ 9 phút** / người / tháng học viên tự tua lại / hỏi lại (cận dưới đo từ data BTC; phỏng vấn cho thấy có thể lâu hơn nhiều khi tìm ngoài trang). Lượt 4 vừa tăng chất lượng lên 88% (đạt chuẩn) vừa giảm chi phí / task thành công 24% so với lượt 3.
 
 ## §9. Rủi ro & an toàn
 - **Dữ liệu:** chỉ gửi model đoạn transcript bài giảng công khai + câu hỏi; không gửi mã học viên hay lịch sử học. Data BTC chỉ dùng số tổng hợp (không commit nguyên file); bình luận YouTube chỉ giữ mã băm, file gốc có tên tài khoản không commit (`.gitignore`). Phỏng vấn / khảo sát không ghi tên, SĐT, email, mã học viên. Không dùng gói model miễn phí để huấn luyện trên dữ liệu học viên.
@@ -135,6 +139,8 @@ flowchart LR
 | 28/11 10:30 | `cost/personas.yaml`: thay bản tự ước tính (09:40) bằng bản **đo từ data BTC** (`evidence/count_usage_btc.py`: 144 người hỏi, chia theo số phiên / tháng; người dùng 144 / 361 / 721; giá theo bảng giá BTC). `cost/simulate-1.csv` chạy theo bản này | Số persona có nguồn đo được thay cho tự ước tính; giá lấy đúng bảng BTC như guide 4.2 |
 | 28/11 11:30 | Thêm khảo sát n = 4 học viên L3B ngoài nhóm (`evidence/survey/`), đưa vào `evidence/summary.md` để kiểm lại "vì sao" | Data chỉ cho biết học viên tua lại / hỏi tiếp, không cho biết vì sao; n < 20 nên chưa tính là nguồn đạt ngưỡng |
 | 28/11 11:45 | Đổi 4 phản hồi từ "khảo sát" thành **phỏng vấn P1–P4** (`evidence/interviews/`): nhóm xác nhận đã hỏi trực tiếp từng người và ghi vào form trong lúc hỏi; khảo sát ghi lại là không làm | Đúng định nghĩa nguồn ở guide 1.2: phỏng vấn ≥3 người ngoài nhóm → đạt ngưỡng |
+| 28/11 12:08 | `codebase/agent.py`: thêm 2 bước tự kiểm (rà lại trước khi từ chối · sửa trích dẫn khi không còn mã hợp lệ); chạy lượt 3 → `eval/run-3.csv` 19/26 (73%); cập nhật §4 sơ đồ, §7, `eval/report.md` §3b, `eval/README.md` | Trace lượt 2: 3 câu bị chặn vì model quên mã / ghi mã không tồn tại, 3 câu từ chối vội. Chi phí / câu +63%; chạy lại mô phỏng 50 phiên trên code lượt 3 → `cost/simulate-2.csv`, cập nhật §8 và `cost/cost-estimate.md` |
+| 28/11 12:55 | Đo lại impact bằng data BTC (`evidence/count_time_btc.py`, `data-mining.md` mục A2): 0,9 phút / lần thay 5 phút tự ước tính → §2 còn ≈ 22 giờ / tháng (cận dưới); kiểm được giả thuyết CP1: 70% câu trả lời không trích mốc. `codebase/agent.py` lượt 4: tách bước chọn đoạn / trả lời → `eval/run-4.csv` 23/26 (88%, đạt chuẩn); mô phỏng 50 phiên → `cost/simulate-3.csv`; cập nhật §1, §2, §4, §7, §8, slide. Thêm `data/import_transcript.py`, `tools.py` nhận link trang pre-class | Thay số tự ước tính bằng số đo; lượt 3 cho thấy hỏi lại cùng ngữ cảnh không sửa được từ chối nhầm → đổi ngữ cảnh. Transcript Day08 thật chưa có trong data BTC (chỉ có tên file) — script sẵn để nhập khi lấy được phụ đề từ trang |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
