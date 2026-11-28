@@ -133,6 +133,7 @@ flowchart LR
 | 28/11 | Thêm `extras/lecture-videorag/` (chép từ repo riêng, commit `f9d489f`) làm hướng mở rộng sau hackathon; không thuộc bản chạy thử, không đổi `codebase/`, `run.py`, bộ câu thử hay kết quả các lượt | Lưu lại phần "không làm" ở §4 (nhiều video, tóm tắt cả khoá) để nhóm làm tiếp; ghi rõ ở `extras/README.md` để không nhầm là phần nộp |
 | 28/11 10:00 | Chấm lượt 2 (`run-2@20261128-092049`): 18/26; điền §8, §9, §10 phân công; mô phỏng chi phí 50 phiên (`cost/simulate-1.csv`) | CP4: lượt 2 + chi phí; tỉ lệ đạt lấy từ lượt 2 |
 | 28/11 10:30 | `cost/personas.yaml`: thay bản tự ước tính (09:40) bằng bản **đo từ data BTC** (`evidence/count_usage_btc.py`: 144 người hỏi, chia theo số phiên / tháng; người dùng 144 / 361 / 721; giá theo bảng giá BTC). `cost/simulate-1.csv` chạy theo bản này | Số persona có nguồn đo được thay cho tự ước tính; giá lấy đúng bảng BTC như guide 4.2 |
+| 28/11 11:30 | Thêm khảo sát n = 4 học viên L3B ngoài nhóm (`evidence/survey/`), đưa vào `evidence/summary.md` để kiểm lại "vì sao" | Data chỉ cho biết học viên tua lại / hỏi tiếp, không cho biết vì sao; n < 20 nên chưa tính là nguồn đạt ngưỡng |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
