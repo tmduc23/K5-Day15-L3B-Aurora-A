@@ -118,6 +118,7 @@ flowchart LR
 | 28/11 09:00 | `eval/benchmark.csv` 14 → 26 câu: thêm B15–B26 là câu hỏi thật của người học (`data_that`); không sửa câu cũ, không sửa metric / chuẩn "đạt" | CP3 cần 20–30 câu, ≥1/3 từ data thật (`run.py check` hết cảnh báo) |
 | 28/11 09:04 | Nối model thật `openai/gpt-4o-mini` qua OpenRouter, chạy lượt 1 → `eval/run-1.csv`, `traces/run-1.jsonl` | CP3 yêu cầu kết quả lượt 1 gọi AI thật |
 | 28/11 09:20 | Cải tiến cho lượt 2 (CP4): `data/lesson_segments.csv` thay chữ 17 đoạn B2 bằng phụ đề tiếng Anh gốc (giữ nguyên mã đoạn và mốc thời gian); `codebase/agent.py` sửa prompt: đối chiếu theo nghĩa khi khác ngôn ngữ, đọc đoạn quanh mốc thời gian trong câu hỏi, trả lời phần có trong bài, sửa tiền đề sai, chỉ hỏi lại khi câu hỏi trỏ tới thứ không xác định | Lượt 1: 7/11 câu trượt là từ chối nhầm (B10, B15, B18–B22), transcript B2 là bản dịch máy khó khớp; B06, B07, B11, B16 (`eval/report.md` §2) |
+| 28/11 | Thêm `extras/lecture-videorag/` (chép từ repo riêng, commit `f9d489f`) làm hướng mở rộng sau hackathon; không thuộc bản chạy thử, không đổi `codebase/`, `run.py`, bộ câu thử hay kết quả các lượt | Lưu lại phần "không làm" ở §4 (nhiều video, tóm tắt cả khoá) để nhóm làm tiếp; ghi rõ ở `extras/README.md` để không nhầm là phần nộp |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
