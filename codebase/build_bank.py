@@ -41,8 +41,14 @@ Theo loại:
 - trac_nghiem: "lua_chon" {"A","B","C","D"}, đúng MỘT đáp án; "dap_an" là chữ cái. Lựa chọn sai phải hợp lý.
 - dien_khuyet: "cau_hoi" là một câu có đúng một chỗ trống viết "____"; "dap_an" là từ / cụm ≤ 5 từ điền vào.
 - tu_luan: "dap_an" là đáp án mẫu 2–4 câu; "y_chinh" là 2–4 ý bắt buộc phải có để tự chấm.
-Trả về DUY NHẤT một mảng JSON, mỗi phần tử có: loai, muc_do, cau_hoi, (lua_chon), dap_an, (y_chinh), giai_thich,
-ma_doan, trich_nguyen_van."""
+MỌI câu (kể cả điền khuyết, tự luận) đều PHẢI có "ma_doan" (danh sách) và "trich_nguyen_van".
+Trả về DUY NHẤT một mảng JSON đúng dạng mẫu (nội dung mẫu chỉ minh hoạ cấu trúc):
+[{"loai": "trac_nghiem", "muc_do": "de", "cau_hoi": "…?", "lua_chon": {"A": "…", "B": "…", "C": "…", "D": "…"},
+  "dap_an": "B", "giai_thich": "…", "ma_doan": ["B1-04"], "trich_nguyen_van": "<chép nguyên văn từ đoạn B1-04>"},
+ {"loai": "dien_khuyet", "muc_do": "vua", "cau_hoi": "Câu có một chỗ ____ cần điền.", "dap_an": "…",
+  "giai_thich": "…", "ma_doan": ["B1-05"], "trich_nguyen_van": "<chép nguyên văn từ đoạn B1-05>"},
+ {"loai": "tu_luan", "muc_do": "kho", "cau_hoi": "…?", "dap_an": "<đáp án mẫu 2–4 câu>", "y_chinh": ["…", "…"],
+  "giai_thich": "…", "ma_doan": ["B1-04", "B1-05"], "trich_nguyen_van": "<chép nguyên văn từ một trong các đoạn>"}]"""
 
 
 def _norm(s):
@@ -69,6 +75,8 @@ def _parse(text):
 def check(q, window):
     """Kiểm một câu theo cụm đoạn. Trả lý do bị loại, hoặc "" nếu đạt."""
     codes = {s["ma_doan"]: s for s in window}
+    if isinstance(q.get("ma_doan"), str):  # model hay trả "B1-04" thay vì ["B1-04"]
+        q["ma_doan"] = re.findall(r"[A-Za-z0-9]+-\d+", q["ma_doan"])
     loai = q.get("loai")
     if loai not in TYPES:
         return "loại không hợp lệ"
