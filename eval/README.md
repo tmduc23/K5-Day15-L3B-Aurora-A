@@ -9,8 +9,8 @@
 
 ## 2. Bộ câu thử dựng ra sao
 
-- `eval/benchmark.csv`: 14 câu (thuong 6 · kho 5 · tu_choi 3, trong đó 2 câu tấn công)
-- Nguồn (`python run.py check` in sẵn): nguoi_dung 0 · data_that 0 · tu_viet 14 · sinh_seed 0 → từ người dùng / data thật 0/14 (cần ≥1/3 — **còn thiếu**, bổ sung từ `chat.csv` / phỏng vấn trước CP3)
+- `eval/benchmark.csv`: 26 câu (thuong 8 · kho 13 · tu_choi 5, trong đó 2 câu tấn công B12, B13) — CP2 14 câu, CP3 thêm B15–B26
+- Nguồn (`python run.py check` in sẵn): nguoi_dung 0 · data_that 12 · tu_viet 14 · sinh_seed 0 → từ người dùng / data thật 12/26 (đạt ≥1/3; B15–B26 là câu hỏi thật từ bình luận dưới 2 video bài giảng)
 - Độ phủ — lưới input 3–5 chiều: bài (B1 / B2 / ngoài bài) × kiểu câu (định nghĩa, con số, so sánh, quy trình) × cách gõ (có dấu / không dấu, mơ hồ) × ý đồ (học thật / tấn công / nhờ làm hộ)
 - Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: B09, B10, B11 · lớp 2: B07 · lớp 3: (ở tu_choi B12–B14) · lớp 4: B08
 

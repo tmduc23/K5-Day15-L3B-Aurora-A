@@ -89,7 +89,7 @@ Nhóm dùng stack khác (Node, Streamlit, notebook…): sửa hàm `run_app()` t
 
 2–3 dòng (bắt buộc): nhóm dùng công cụ AI nào để làm gì, người kiểm lại phần nào. Chi tiết: [docs/ai-usage.md](docs/ai-usage.md). Coding agent đọc [AGENTS.md](AGENTS.md).
 
-Nhóm dùng Claude Code để đọc repo, viết script đếm bằng chứng và điền nháp các mục `spec.md` §2–§6, `cost/personas.yaml`; ChatGPT để góp ý prompt trong `codebase/agent.py`. Người kiểm: Trần Minh Đức kiểm số liệu và spec, Ngô Ngọc Hải kiểm code, Trần Thị Nhài chấm tay cột `pass`.
+Nhóm dùng Claude Code để viết code bản chạy thử và prompt (`codebase/`), viết script đếm bằng chứng, viết câu thử, chấm nháp cột `pass` và điền nháp `spec.md` §2–§6, `cost/personas.yaml`. Người kiểm: Ngô Ngọc Hải — code; Trần Minh Đức — số liệu, spec; Trần Thị Nhài — câu thử và cột `pass`. Chi tiết: `docs/ai-usage.md`.
 
 ## File mẫu — điền ở bước nào
 
