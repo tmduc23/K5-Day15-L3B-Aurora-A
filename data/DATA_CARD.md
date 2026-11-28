@@ -17,9 +17,11 @@
 | | |
 |---|---|
 | Dùng để làm gì | Đo 3 metric ở `eval/metric_spec.yaml` |
-| Từ đâu | Nhóm tự viết dựa trên Dataset 1 (14 câu: thuong 6 · kho 5 · tu_choi 3, gồm 2 câu tấn công) |
+| Từ đâu | 14 câu nhóm tự viết dựa trên Dataset 1 (B01–B14, CP2) + 12 câu hỏi thật của người học lấy nguyên văn từ bình luận công khai dưới 2 video bài giảng (B15–B26, CP3; chỉ bỏ lời cảm ơn đầu câu; mã bình luận đã ẩn danh; cách lấy: `evidence/count_comments.py`) |
 | Xử lý những bước gì | Mỗi câu ghi `expected` + tập mã đoạn hợp lệ, đối chiếu tay với transcript |
-| Số dòng / số đoạn | 14 |
-| Phiên bản / ngày lấy | 27/11/2026 (CP2) |
-| Nhãn | `tu_viet` |
-| Giới hạn | **Chưa đạt ≥1/3 câu từ người dùng / data thật**: cần thêm câu hỏi thật lấy từ `chat.csv` (data BTC) hoặc phỏng vấn học viên trước CP3 |
+| Số dòng / số đoạn | 26 (thuong 8 · kho 13 · tu_choi 5) |
+| Phiên bản / ngày lấy | 27/11/2026 (CP2, 14 câu) · 28/11/2026 09:00 (CP3, thêm 12 câu thật) |
+| Nhãn | `tu_viet` 14 · `data_that` 12 (12/26 ≥ 1/3) |
+| Giới hạn | Câu thật là người tự học trên YouTube (tiếng Anh), không phải học viên L3B; nên thêm câu hỏi thật từ `chat.csv` (data BTC) / phỏng vấn khi có |
+
+**Thay đổi 28/11 09:20 (sau lượt 1):** chữ của 17 đoạn B2 trong `data/lesson_segments.csv` đổi từ bản dịch máy tiếng Việt sang phụ đề tiếng Anh gốc (manual) của video `IHZwWFHWa-w`; mã đoạn, mốc start/end giữ nguyên nên `pass_criterion` không đổi. Lượt 1 (`run-1`) chạy trên bản cũ, lượt 2 (`run-2`) trên bản mới.

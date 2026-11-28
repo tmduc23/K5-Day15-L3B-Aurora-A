@@ -8,7 +8,7 @@
 
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
-| 1 | | __/__ | | __/__ | __/__ | __/__ | đạt / chưa |
+| 1 | run-1@20261128-090408 | 15/26 | 58% | 5/8 | 5/13 | 5/5 | chưa (cần ≥80%) |
 | 2 | | __/__ | | __/__ | __/__ | __/__ | đạt / chưa |
 
 Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv`. Trace: `traces/run-1.jsonl`, `traces/run-2.jsonl`.
@@ -17,17 +17,18 @@ Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv`. Trace: `traces/run-
 
 | Nhóm lỗi | Số câu | Câu |
 |---|---|---|
-| vd: bịa nguồn *(ví dụ)* | | |
-| vd: đoán khi thiếu thông tin *(ví dụ)* | | |
-| | | |
+| Từ chối nhầm: bài có nội dung nhưng trả "không có trong bài" | 7 | B15, B18, B19, B20, B21, B22, B10 |
+| Trả lời thiếu / sai ý chính dù trích đúng mã | 2 | B06, B16 |
+| Không hỏi lại câu mơ hồ, hoặc hỏi lại khi nên nói "bài không đề cập" | 2 | B07, B11 |
+| Bịa mã đoạn | 0 | — |
 
 **≥3 lỗi cụ thể:**
 
 | Câu | Input | Output | Vì sao sai |
 |---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
+| B21 | "…why you added the negative gradient vector to the weight vector?" (câu hỏi thật) | "Không có trong bài: , bài không đề cập đến lý do về việc thêm vector gradient âm…" | Bài giải thích rõ ở B2-07/B2-08 (gradient âm = hướng giảm chi phí nhanh nhất); transcript bài 2 là bản dịch máy nên model không khớp được câu tiếng Anh |
+| B10 | "Vì sao mạng trong bài dùng 3 lớp ẩn?" | "Không có trong bài: , bài không đề cập cụ thể lý do vì sao mạng sử dụng 3 lớp ẩn." | Không sửa tiền đề sai: bài dùng 2 lớp ẩn 16 nơ-ron (B1-05) |
+| B07 | "cái hàm đó là gì vậy?" | "Không có trong bài: , bài giảng không đề cập rõ về khái niệm \"cái hàm\"…" | Câu mơ hồ phải hỏi lại học viên muốn hỏi hàm nào, không phải từ chối |
 
 ## 3. Một lần cải tiến
 

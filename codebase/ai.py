@@ -49,8 +49,45 @@ def call_model(system: str, user: str) -> dict:
         last = (user.strip().splitlines() or [""])[-1]
         return {"text": "[câu trả lời giả — chưa nối model] " + last[:60], "model": "fake", "tokens_in": 0, "tokens_out": 0}
 
-    # NHÓM VIẾT: gọi model thật ở đây (theo MODEL_PROVIDER, MODEL_NAME, API_KEY) rồi trả đúng 4 khoá.
-    # Ví dụ chép được cho từng nhà cung cấp: docs/connect-model.md mục 2.
+    if MODEL_PROVIDER in BASE_URLS:
+        return _chat_completions(BASE_URLS[MODEL_PROVIDER], system, user)
     raise NotImplementedError(
-        "chưa viết phần gọi model thật cho MODEL_PROVIDER=%s trong codebase/ai.py — xem docs/connect-model.md"
+        "chưa viết phần gọi model thật cho MODEL_PROVIDER=%s trong codebase/ai.py — dùng openrouter hoặc openai"
         % MODEL_PROVIDER)
+
+
+# Nhà cung cấp theo chuẩn OpenAI Chat Completions. Chỉ dùng thư viện chuẩn (urllib), không cần pip install.
+BASE_URLS = {
+    "openrouter": "https://openrouter.ai/api/v1",
+    "openai": "https://api.openai.com/v1",
+}
+
+
+def _chat_completions(base_url: str, system: str, user: str) -> dict:
+    import json
+    import urllib.error
+    import urllib.request
+
+    if not API_KEY:
+        raise RuntimeError("Thiếu API_KEY trong .env")
+    if not MODEL_NAME:
+        raise RuntimeError("Thiếu MODEL_NAME trong .env (vd openai/gpt-4o-mini)")
+    body = json.dumps({
+        "model": MODEL_NAME,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+        "max_tokens": 1500,
+    }).encode("utf-8")
+    req = urllib.request.Request(base_url + "/chat/completions", data=body, method="POST", headers={
+        "Authorization": "Bearer " + API_KEY, "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise RuntimeError("API trả lỗi %d: %s" % (e.code, e.read().decode("utf-8", "replace")[:300]))
+    usage = data.get("usage") or {}
+    return {
+        "text": data["choices"][0]["message"].get("content") or "",
+        "model": data.get("model") or MODEL_NAME,
+        "tokens_in": int(usage.get("prompt_tokens") or 0),
+        "tokens_out": int(usage.get("completion_tokens") or 0),
+    }

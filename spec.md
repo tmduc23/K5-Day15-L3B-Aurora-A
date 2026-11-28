@@ -19,7 +19,7 @@ Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv 
 - Việc họ cố làm xong: Hiểu đúng một khái niệm kỹ thuật trong bài trước buổi học sáng hôm sau
 - Hôm nay họ giải bằng gì, hỏng ở đâu: Hỏi trợ giảng AI — nhưng câu trả lời không rõ lấy từ đâu trong bài, học viên không tự kiểm được; chưa bỏ vì không có lựa chọn khác
 - Pain: Học viên — đang hỏi câu kỹ thuật dưới video pre-class — không biết câu trả lời có căn cứ trong bài không — học sai kiến thức hoặc mất thêm 5–10 phút tìm lại thủ công
-- Bằng chứng — số chính (CP1 — giả thuyết, kiểm sau): 1,260 chat log Day01–Day13 (data BTC), trung bình 97 lượt/ngày; giả thuyết ≥30% câu trả lời không trích mã đoạn → sẽ kiểm bằng sample 20 chat + phỏng vấn 2–3 HV chiều 27/11; chi tiết: `evidence/summary.md`
+- Bằng chứng — số chính (CP3, chi tiết `evidence/data-mining.md`): (A) chat log BTC: sau khi trợ giảng AI trả lời câu hỏi dưới video, **656/1091 (60%)** lượt học viên tua lùi video trong 5 phút (199/1091, 18%) hoặc hỏi tiếp trong 10 phút (548/1091, 50%) — 144 học viên. (B) bình luận công khai dưới 2 video bài giảng: **45/68 (66%)** câu hỏi về nội dung bài không ai trả lời; chỉ 1/23 câu trả lời chỉ mốc thời gian trong video. Giả thuyết CP1 (≥30% câu trả lời không trích đoạn) không đếm được vì data BTC không có chữ câu trả lời.
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
@@ -89,9 +89,9 @@ flowchart LR
 - Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 14 câu (thuong 6 · kho 5 · tu_choi 3) · metric: `eval/metric_spec.yaml` (3 metric)
+- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 26 câu (thuong 8 · kho 13 · tu_choi 5; 12/26 câu hỏi thật `data_that`) · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ 80% câu qua, và 0 mã đoạn bịa trong toàn bộ lượt chạy, và 100% câu tu_choi qua"
-- Kết quả: lượt 1 __/__ (__%) · lượt 2 __/__ (__%) — run ID: __ / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
+- Kết quả: lượt 1 15/26 (58%, chưa đạt: cần ≥80%; tu_choi 5/5, 0 mã bịa) · lượt 2 __/__ (__%) — run ID: run-1@20261128-090408 / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 - Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
@@ -113,7 +113,11 @@ flowchart LR
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
-|  |  |  |
+| 28/11 09:08 | Đào chat log BTC (`evidence/count_chat_btc.py`, `evidence/data-mining.md` mục A); cập nhật §1 số chính | Kiểm giả thuyết CP1 bằng data BTC; chữ câu trả lời không có nên đo hành vi sau khi nhận trả lời |
+| 28/11 09:00 | Thêm nguồn bằng chứng: đào bình luận công khai dưới 2 video bài giảng (`evidence/count_comments.py`, `evidence/data-mining.md` mục B); giả thuyết ghi trước lúc 08:57 | Data BTC chưa có trên máy chạy code; cần ≥1 nguồn đạt ngưỡng cho CP3 |
+| 28/11 09:00 | `eval/benchmark.csv` 14 → 26 câu: thêm B15–B26 là câu hỏi thật của người học (`data_that`); không sửa câu cũ, không sửa metric / chuẩn "đạt" | CP3 cần 20–30 câu, ≥1/3 từ data thật (`run.py check` hết cảnh báo) |
+| 28/11 09:04 | Nối model thật `openai/gpt-4o-mini` qua OpenRouter, chạy lượt 1 → `eval/run-1.csv`, `traces/run-1.jsonl` | CP3 yêu cầu kết quả lượt 1 gọi AI thật |
+| 28/11 09:20 | Cải tiến cho lượt 2 (CP4): `data/lesson_segments.csv` thay chữ 17 đoạn B2 bằng phụ đề tiếng Anh gốc (giữ nguyên mã đoạn và mốc thời gian); `codebase/agent.py` sửa prompt: đối chiếu theo nghĩa khi khác ngôn ngữ, đọc đoạn quanh mốc thời gian trong câu hỏi, trả lời phần có trong bài, sửa tiền đề sai, chỉ hỏi lại khi câu hỏi trỏ tới thứ không xác định | Lượt 1: 7/11 câu trượt là từ chối nhầm (B10, B15, B18–B22), transcript B2 là bản dịch máy khó khớp; B06, B07, B11, B16 (`eval/report.md` §2) |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 

@@ -7,42 +7,33 @@
 
 | Nguồn | Đạt ngưỡng? | File |
 |---|---|---|
-| Đào data (x/N, %, cách đếm chạy lại được, ≥5 ví dụ) | ☐ | `evidence/data-mining.md` |
-| Phỏng vấn (≥3 người ngoài nhóm, đúng người dùng) | ☐ | `evidence/interviews/P1.md`… |
-| Khảo sát (≥20 người ngoài nhóm, đúng người dùng) | ☐ | `evidence/survey/` |
+| Đào data (x/N, %, cách đếm chạy lại được, ≥5 ví dụ) | ☑ — 2 bộ: chat log BTC (N = 1091) + bình luận dưới video bài giảng (N = 68) | `evidence/data-mining.md` · script `evidence/count_chat_btc.py`, `evidence/count_comments.py` |
+| Phỏng vấn (≥3 người ngoài nhóm, đúng người dùng) | ☐ — chưa phỏng vấn; dùng để kiểm lại "vì sao" ở CP4 | `evidence/interviews/P1.md`… |
+| Khảo sát (≥20 người ngoài nhóm, đúng người dùng) | ☐ — không làm | — |
+
+Giả thuyết viết trước khi đào: `evidence/hypothesis.md` (CP1 17:00 27/11 cho chat log; 08:57 28/11 cho bình luận).
 
 ## 2. Số chính
 
-- Đào data: __/__ (__%) …
-- Phỏng vấn: __/3 người gặp *(n nhỏ không ghi %)* · số lần / tháng: P1 __, P2 __, P3 __ · mỗi lần mất __–__ phút
-- Khảo sát: n = __ · __/__ (__%) …
-
-Phỏng vấn nhiều vai thì đếm theo từng vai, không cộng chung.
-
-| | Vai | Gặp pain? | Số lần / 1 tháng qua | Lần gần nhất mất | Đang xoay xở bằng |
-|---|---|---|---|---|---|
-| P1 | | | | | |
-| P2 | | | | | |
-| P3 | | | | | |
+- **Đào data — chat log BTC:** sau khi trợ giảng AI trả lời câu hỏi dưới video, **656/1091 (60%)** lượt học viên tua lùi video trong 5 phút (**199/1091, 18%**) hoặc hỏi tiếp trợ giảng trong 10 phút (**548/1091, 50%**) — 144 học viên, Day01–Day13.
+- **Đào data — bình luận dưới 2 video bài giảng:** **45/68 (66%)** câu hỏi về nội dung bài không ai trả lời; trong 23 câu có trả lời, chỉ **1/23 (4%)** câu trả lời chỉ ra mốc thời gian trong video; tác giả video trả lời 2/68 (3%).
+- Phỏng vấn: chưa có. Khảo sát: không làm.
 
 ## 3. ≥5 trích dẫn hoặc ví dụ nguyên văn (có nguồn, bỏ tên)
 
-1. "…" — P_ / dòng data __ / phiếu khảo sát __
-2.
-3.
-4.
-5.
+1. "At 10:05 you say that adding the negative weights around to detect edges will increase the weighted sum, but surely as the activation value is between 0 and 1, it will decrease the weighted sum…?" — bình luận `B1 · c7cdac06f`, không ai trả lời
+2. "Question re 15:00: should the bias vector go from b_0->b_k instead of b_n?" — bình luận `B1 · c36f2aa24`, không ai trả lời
+3. "…there's one point that I didn't understand, why does the gradient descent algorithm struggle to find local minimas with swapped labels? If anyone could answer my question I'd be very grateful." — bình luận `B2 · cda307a78`, không ai trả lời
+4. "I'm not sure I understand the last section regarding training a neural network using mislabeled images. … why would the accuracy of the models be any different?" — bình luận `B2 · c1d397872`, không ai trả lời
+5. "16:50 what if we give every layer a cost to force them to think by breaking it into edges and loop?" — bình luận `B2 · c2cfb5324`, không ai trả lời
+6. Lượt chat `C01122` (Day01/d01-r1-v02, data BTC): học viên hỏi trợ giảng dưới video, nhận trả lời 366 ký tự, rồi trong vài phút vừa tua lùi video vừa hỏi tiếp dưới cùng video (thêm 4 lượt cùng kiểu ở `data-mining.md` mục A).
 
 ## 4. Các nguồn có khớp nhau không
 
-Data nói __; người dùng nói __. Khớp / lệch ở đâu, vì sao: __
+Chat log BTC nói: với trợ giảng AI đang chạy, **60%** lần nhận trả lời xong học viên vẫn phải tua lại video hoặc hỏi tiếp — câu trả lời không giúp họ tự kiểm ngay trong bài. Bình luận công khai nói: khi **không** có trợ giảng, **66%** câu hỏi về nội dung bài không ai trả lời, và câu trả lời (nếu có) gần như không bao giờ chỉ về đoạn nào trong video (1/23).
+
+Khớp ở chỗ: người học cần câu trả lời **gắn với đúng đoạn trong video** để tự kiểm, và hiện cả hai bối cảnh đều không có. Lệch ở chỗ: bình luận YouTube là người tự học công khai, không phải học viên L3B; chat log cho biết hành vi chứ không cho biết vì sao (hỏi tiếp có thể vì tò mò). Giả thuyết CP1 (≥30% câu trả lời không trích đoạn) chưa kiểm trực tiếp được vì data BTC không có chữ câu trả lời → kiểm bằng phỏng vấn.
 
 ## 5. Kết luận
 
-Giả thuyết ở `evidence/hypothesis.md`: **đúng / sai / phải đổi** — vì __. Điều vẫn chưa biết: __
-
-## Lịch hẹn (dùng cho CP2 — chỉ ghi vai và giờ, không tên)
-
-| Vai | Giờ hẹn | Đã xong? |
-|---|---|---|
-| | | |
+Pain có thật và lặp lại thường xuyên: phần lớn câu hỏi dưới video bài giảng hoặc không được trả lời (66%), hoặc được trả lời mà học viên vẫn phải tự tua lại / hỏi tiếp (60%). Lát cắt "trả lời kèm mã đoạn + link mở đúng giây, không có trong bài thì nói không có" nhắm đúng chỗ này: học viên bấm link là tự kiểm được, không phải tua tìm. Cần kiểm lại "vì sao" bằng ≥3 phỏng vấn học viên L3B trước CP4.

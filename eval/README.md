@@ -34,7 +34,7 @@
 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
-| 1 | | | | __/__ | | |
+| 1 | run-1@20261128-090408 | openai/gpt-4o-mini (OpenRouter) | Workflow cố định: `get_lesson_segments` (39 đoạn B1/B2) → 1 lần gọi model, chỉ trích mã đoạn → `check_citations` bỏ mã sai, không còn mã hợp lệ thì trả câu an toàn | 15/26 | 58% | Chưa (cần ≥80%; tu_choi 5/5 và 0 mã bịa thì đạt) |
 | 2 | | | | __/__ | | |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
@@ -42,3 +42,5 @@ Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, k
 ## 6. Lỗi chính
 
 Tóm 2–3 dòng từ `eval/report.md`: nhóm lỗi lớn nhất · đã sửa gì · còn lại gì.
+
+Lượt 1: nhóm lỗi lớn nhất là **từ chối nhầm** — bài có nội dung nhưng trợ giảng trả "không có trong bài" (7/11 câu trượt, gồm B10 tiền đề sai; phần lớn là câu hỏi thật tiếng Anh về bài 2, nơi transcript là bản dịch máy tiếng Việt). Còn lại: trả lời thiếu ý chính (B06, B16) và xử lý sai câu mơ hồ (B07, B11). Không có mã đoạn bịa; 5/5 câu từ chối đúng. Sửa ở lượt 2 (CP4).
