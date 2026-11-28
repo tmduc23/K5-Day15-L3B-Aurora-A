@@ -54,3 +54,27 @@ def check_citations(codes: list) -> dict:
             "khoang": "%s–%s" % (fmt_time(r["start"]), fmt_time(r["end"])),
         })
     return {"valid": valid, "invalid": invalid}
+
+
+REFERENCES_CSV = os.path.join(ROOT, "data", "references.csv")
+
+
+@tool
+def get_references(text: str, bai: str = "", limit: int = 2, min_hits: int = 1) -> list:
+    """get_references — tìm tài liệu tham khảo trên internet cho một nội dung, từ danh sách link đã kiểm tay
+    (data/references.csv: mỗi link có nguồn và ngày kiểm). Model KHÔNG tự viết URL; code chọn link theo từ khoá.
+    Input: đoạn chữ cần tìm tài liệu (câu hỏi + đoạn bài được trích), mã bài, số link tối đa.
+    Output: [{id, tieu_de, url, nguon}] xếp theo số từ khoá khớp. Không tác động ra ngoài (chỉ đọc file)."""
+    if "refs" not in _cache:
+        with open(REFERENCES_CSV, encoding="utf-8") as f:
+            _cache["refs"] = list(csv.DictReader(f))
+    low = text.lower()
+    scored = []
+    for r in _cache["refs"]:
+        if bai and r["bai"] not in (bai, "all"):
+            continue
+        hits = sum(1 for k in r["tu_khoa"].split("|") if k and k.lower() in low)
+        if hits >= max(1, min_hits):
+            scored.append((hits, r))
+    scored.sort(key=lambda x: -x[0])
+    return [{k: r[k] for k in ("id", "tieu_de", "url", "nguon")} for _, r in scored[:limit]]

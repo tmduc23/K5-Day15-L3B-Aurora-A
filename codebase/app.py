@@ -34,7 +34,8 @@ def main() -> int:
         print("Không nạp được codebase/ — lỗi ở %s: %s: %s" % (_where(e), type(e).__name__, e))
         print("Sửa lỗi rồi chạy lại. Cách nối model: docs/connect-model.md")
         return 1
-    print("Bản chạy thử — gõ đầu vào rồi Enter. Thoát: Ctrl+C (hoặc Enter 2 lần với dòng trống).")
+    print("Bản chạy thử — gõ câu hỏi rồi Enter. /on-tap: tạo đề ôn tập (bài có sẵn hoặc link YouTube / file phụ đề) · "
+          "/luyen: luyện từ ngân hàng câu hỏi. Thoát: Ctrl+C (hoặc Enter 2 lần với dòng trống).")
     blank = 0
     while True:
         try:
@@ -48,6 +49,26 @@ def main() -> int:
                 return 0
             continue
         blank = 0
+        if text.lower() in ("/luyen", "/luyen-tap"):
+            # Luyện tập tương tác từ ngân hàng câu hỏi (codebase/practice.py) — không gọi model
+            try:
+                import practice
+                practice.interactive()
+            except Exception as e:
+                print("[lỗi] %s: %s" % (type(e).__name__, e))
+            continue
+        if text.lower() in ("/on-tap", "/ontap", "/quiz"):
+            # Tính năng đề ôn tập (codebase/quiz.py): chọn bài, số câu, mức độ, chủ đề
+            tracing.begin("quiz")
+            try:
+                import quiz
+                quiz.interactive()
+            except Exception as e:
+                print("[lỗi] %s: %s" % (type(e).__name__, e))
+            s, _ = tracing.end()
+            print("   (model: %s · gọi model %d lần · token vào %d / ra %d)"
+                  % (", ".join(s["models"]) or "—", s["model_calls"], s["tokens_in"], s["tokens_out"]))
+            continue
         tracing.begin("app")
         try:
             result = answer(text)

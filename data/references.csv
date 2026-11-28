@@ -1,0 +1,17 @@
+id,bai,tieu_de,url,nguon,tu_khoa,ngay_kiem
+R01,B1,But what is a neural network? (bài học + ghi chú),https://www.3blue1brown.com/lessons/neural-networks,3Blue1Brown,neuron|layer|hidden|activation|network|pixel|nơ-ron|lớp,2026-11-28
+R02,B2,Gradient descent: how neural networks learn,https://www.3blue1brown.com/lessons/gradient-descent,3Blue1Brown,gradient|descent|cost|minimum|learn|training|chi phí|học,2026-11-28
+R03,B1,Neural Networks and Deep Learning — Chương 1: Using neural nets to recognize handwritten digits,http://neuralnetworksanddeeplearning.com/chap1.html,Michael Nielsen (sách mở),neuron|sigmoid|perceptron|layer|digit|handwritten|weight|bias,2026-11-28
+R04,B2,Neural Networks and Deep Learning — Chương 2: How the backpropagation algorithm works,http://neuralnetworksanddeeplearning.com/chap2.html,Michael Nielsen (sách mở),backpropagation|gradient|partial|derivative|lan truyền ngược,2026-11-28
+R05,B1,Artificial neuron,https://en.wikipedia.org/wiki/Artificial_neuron,Wikipedia,neuron|weighted sum|weight|activation|nơ-ron|trọng số,2026-11-28
+R06,B1,Sigmoid function,https://en.wikipedia.org/wiki/Sigmoid_function,Wikipedia,sigmoid|logistic|squish|0 and 1,2026-11-28
+R07,B1,Rectifier (neural networks) — ReLU,https://en.wikipedia.org/wiki/Rectifier_(neural_networks),Wikipedia,relu|rectified|linear unit,2026-11-28
+R08,B1,Activation function,https://en.wikipedia.org/wiki/Activation_function,Wikipedia,activation function|sigmoid|relu|hàm kích hoạt,2026-11-28
+R09,B2,Gradient descent,https://en.wikipedia.org/wiki/Gradient_descent,Wikipedia,gradient|descent|downhill|minimum|step|negative gradient,2026-11-28
+R10,B2,Mean squared error,https://en.wikipedia.org/wiki/Mean_squared_error,Wikipedia,cost|squares|squared|difference|average|chi phí|bình phương,2026-11-28
+R11,B2,Backpropagation,https://en.wikipedia.org/wiki/Backpropagation,Wikipedia,backpropagation|lan truyền ngược,2026-11-28
+R12,all,MNIST database,https://en.wikipedia.org/wiki/MNIST_database,Wikipedia,mnist|28x28|handwritten|digit|images|labeled|chữ số,2026-11-28
+R13,B2,"Training, validation, and test data sets",https://en.wikipedia.org/wiki/Training,_validation,_and_test_data_sets,Wikipedia,training data|training set|test|new images|never seen|labeled|huấn luyện,2026-11-28
+R14,B2,Overfitting,https://en.wikipedia.org/wiki/Overfitting,Wikipedia,memorize|random|shuffled|labels|ghi nhớ,2026-11-28
+R15,all,Machine Learning Crash Course — Neural networks,https://developers.google.com/machine-learning/crash-course/neural-networks,Google for Developers,neuron|layer|hidden|activation|relu|sigmoid|network,2026-11-28
+R16,B2,Machine Learning Crash Course — Gradient descent,https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent,Google for Developers,gradient|descent|loss|cost|step|learning,2026-11-28

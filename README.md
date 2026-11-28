@@ -58,6 +58,12 @@ Trong README này lệnh viết là `python …`; máy nhóm cần `python3` hay
 | `python run.py simulate --try` | Thử mô phỏng chi phí 10 phiên (làm trước CP3) → `cost/simulate-try.csv` |
 | `python run.py simulate` | Mô phỏng chi phí khi dùng thật theo `cost/personas.yaml` (≥50 phiên) → `cost/simulate-N.csv` + `cost/simulate-N-summary.md` |
 | `python run.py simulate --rate-from eval/run-2.csv` | Như trên, lấy tỉ lệ đạt từ đúng lượt chỉ định. Không ghi thì khung lấy lượt `run-N` mới nhất đã chấm, cùng model, và ghi rõ đã lấy lượt nào trong bản tóm tắt |
+| `python codebase/web.py` → mở http://localhost:8000 | **Trang học + ôn tập:** tải video lên (kèm file phụ đề .srt/.vtt) hoặc dán link YouTube → xem video, bấm dòng phụ đề để tua → nút **Tạo tài liệu ôn tập** (đề nhanh hoặc bộ đầy đủ trắc nghiệm / điền khuyết / tự luận), chọn đáp án để xem giải thích, nút **Xem trong video** tua đúng đoạn, tải về .md |
+| `python run.py` rồi gõ `/on-tap` | **Đề ôn tập:** chọn bài, số câu (3–10), mức độ (dễ / vừa / khó), chủ đề → đề trắc nghiệm bám nội dung bài, đáp án có mã đoạn + link đúng giây, kèm tài liệu tham khảo trên internet. Lưu ở `quiz/` |
+| `python codebase/quiz.py --bai B1 --so-cau 5 --muc-do vua --chu-de "sigmoid"` | Như trên, không hỏi từng bước |
+| `python codebase/quiz.py --video <link YouTube hoặc file .srt/.vtt> --so-cau 5` | **Nạp video bất kỳ rồi ra đề:** lấy phụ đề (YouTube qua yt-dlp, hoặc file phụ đề tải từ nút CC trang pre-class), chia đoạn có mã `V1-01…`, lưu `data/videos/` — không đụng bài của trợ giảng |
+| `python codebase/build_bank.py` · `--video <link/file> --code V1` | **Ngân hàng câu hỏi:** ≥40 câu / bài — trắc nghiệm, điền khuyết, tự luận — đáp án, giải thích, câu trích nguyên văn (code kiểm có thật trong bài), link đúng giây, tài liệu tham khảo → `data/question_bank.json`, `quiz/ngan-hang-<bài>.md` |
+| `python run.py` rồi gõ `/luyen` | **Luyện tập tương tác** từ ngân hàng: hỏi từng câu, chấm ngay trắc nghiệm / điền khuyết, tự luận hiện ý chính để tự chấm; cuối buổi ra điểm và câu cần xem lại. Không gọi model |
 
 Gói miễn phí báo hết lượt: thêm `--wait 4` sau `eval` hoặc `simulate` (nghỉ 4 giây giữa hai lượt gọi). Sửa CSV bằng Excel: *File → Save As → CSV UTF-8*; Google Sheets: *Tệp → Tải xuống → CSV*.
 
