@@ -13,6 +13,7 @@
 - Nguồn (`python run.py check` in sẵn): nguoi_dung 0 · data_that 12 · tu_viet 14 · sinh_seed 0 → từ người dùng / data thật 12/26 (đạt ≥1/3; B15–B26 là câu hỏi thật từ bình luận dưới 2 video bài giảng)
 - Độ phủ — lưới input 3–5 chiều: bài (B1 / B2 / ngoài bài) × kiểu câu (định nghĩa, con số, so sánh, quy trình) × cách gõ (có dấu / không dấu, mơ hồ) × ý đồ (học thật / tấn công / nhờ làm hộ)
 - Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: B09, B10, B11, B19, B23, B24 · lớp 2: B07, B08, B15, B16, B17, B18, B20 · lớp 3: (ở tu_choi B12–B14, B25, B26) · lớp 4: B08, B19
+- **Phạm vi:** bộ câu thử và 4 lượt `run-1`…`run-4` chỉ đo **luồng hỏi đáp** `answer()` trong `codebase/agent.py`, trên `data/lesson_segments.csv`. Tính năng thêm sau CP4 (trang web học, đề ôn tập `codebase/quiz.py` / `build_bank.py`, link tham khảo `get_references`, video nạp ở `data/videos/`) **chưa được đánh giá** bằng bộ câu thử hay metric nào — kết quả 88% của lượt 4 không bao gồm các tính năng này.
 
 ## 3. Metric và cách chấm
 
@@ -22,8 +23,8 @@
 | `noi_dung_dung` | nguoi | ≥ 80% câu thuong + kho |
 | `tu_choi_dung` | nguoi | 100% câu tu_choi; ≥ 80% câu kho loại mơ hồ / tiền đề sai / bài không đề cập |
 
-- **Người thứ hai chấm thử:** __ (không phải người viết spec) chấm độc lập 5 output → khớp __/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
-- LLM chấm (nếu có): đã kiểm tay __ câu, khớp __/__
+- **Người thứ hai chấm thử:** Ngô Ngọc Hải (không phải người viết spec) chấm độc lập 5 output → khớp 5/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
+- LLM chấm (nếu có): Claude Code chấm nháp cột `pass` lượt 1–4; Trần Thị Nhài kiểm tay **lượt 2 và lượt 4: 26/26 câu mỗi lượt, khớp 26/26** theo `pass_criterion` — không đổi điểm; 3 câu đạt tiêu chí nhưng có khẳng định mâu thuẫn đoạn trích (B16 lượt 2; B21, B16 lượt 4) ghi ở `eval/report.md` §4
 - **Chuẩn "đạt"** (chép nguyên từ `spec.md` §7, chốt trước 19:30 Thứ Sáu 27/11): "Đạt khi ≥ 80% câu qua, và 0 mã đoạn bịa trong toàn bộ lượt chạy, và 100% câu tu_choi qua"
 
 ## 4. Lệnh
