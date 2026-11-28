@@ -12,7 +12,7 @@ README của nhóm có mục "Dùng AI vào việc gì" (2–3 dòng, bắt bu�
 | Rà câu hỏi phỏng vấn / khảo sát | | Chỉ rà câu dẫn dắt | | |
 | Viết câu thử (benchmark) | Claude Code | B01–B14: AI viết (`tu_viet`); B15–B26: AI chọn câu hỏi thật từ bình luận và viết `expected` / `pass_criterion` từ transcript | Mỗi câu thử có `source`; __ đối chiếu `expected` với transcript | Trần Thị Nhài |
 | Sinh data `synthetic` (nếu có) | | | Seed __ · kiểm tay __ dòng | |
-| Chấm cột `pass` bằng LLM (nếu có) | Claude Code | Chấm cột `pass` + `ghi_chu` của `eval/run-1.csv` (26 câu) theo `pass_criterion`, theo yêu cầu của nhóm; lý do từng câu ghi ở `ghi_chu` | Kiểm tra thủ công __/26 câu, khớp __/__ | Trần Thị Nhài |
-| Slide, văn bản | | | | |
+| Chấm cột `pass` bằng LLM (nếu có) | Claude Code | Chấm cột `pass` + `ghi_chu` của `eval/run-1.csv` và `eval/run-2.csv` (26 câu mỗi lượt) theo `pass_criterion`, theo yêu cầu của nhóm; lý do từng câu ghi ở `ghi_chu` | Kiểm tra thủ công __/26 câu, khớp __/__ | Trần Thị Nhài |
+| Slide, văn bản | Claude Code | Soạn nháp `spec.md` §2, §3, §5, §6, §8, §9, `eval/report.md`, `cost/cost-estimate.md`, `evidence/summary.md` từ số liệu đã chạy; viết script đếm tần suất dùng (`evidence/count_usage_btc.py`) cho `cost/personas.yaml`; soạn phiếu khảo sát (docx + Google Form) | __ đọc lại, đối chiếu từng con số với file nguồn | Trần Minh Đức, Trần Tùng Lâm |
 
 **Không dùng AI để:** tạo người được phỏng vấn, trích dẫn, câu trả lời khảo sát; sửa kết quả các lượt đã chạy (`eval/run-*.csv`, `cost/simulate-*.csv`, `traces/`).

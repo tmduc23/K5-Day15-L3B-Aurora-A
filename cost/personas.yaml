@@ -3,48 +3,46 @@
 # Mọi số phải có nguồn (data / phỏng vấn / khảo sát / quy mô khoá có nguồn) hoặc ghi rõ "(tự ước tính)".
 # Chạy: python run.py simulate --try   (10 phiên, kiểm khung — làm trước CP3)
 #       python run.py simulate         (đủ số phiên dưới đây — bản nộp CP4)
+# Số persona / người dùng đo bằng: python evidence/count_usage_btc.py <data/preclass của repo đề>
 
 sessions: 50        # số phiên mô phỏng — bản nộp ≥50
 seed: 42            # giữ cố định để chạy lại ra cùng chuỗi phiên
 
-users:              # số người dùng thật nếu đưa vào dùng — 3 kịch bản, ở quy mô thật của sản phẩm
+users:              # số người dùng trợ giảng dưới video / tháng — 3 kịch bản
   low: 144
-  base: 700
-  high: 1000
-  source: "Thấp: 144 học viên đã hỏi trợ giảng dưới video trong data BTC (evidence/data-mining.md mục A). Cơ sở: lớp L3 hơn 700 học viên (README hackathon). Cao: 1000 (tự ước tính, nếu mở cho cả L3A + L3B và khoá sau)"
+  base: 361
+  high: 721
+  source: "data/preclass (BTC): thấp = 144 học viên đã thật sự hỏi trợ giảng dưới video trong 05–25/11/2026 (chat.csv); cao = 721 tài khoản học viên (learners.csv), coi như ai cũng dùng; cơ sở = 50% số tài khoản (tự ước tính, giữa hai mức đo được)"
 
-personas:           # ≥3 kiểu người dùng; share cộng lại = 1
+personas:           # chia 144 người đã hỏi theo số phiên hỏi / tháng; share cộng lại = 1
   - name: hoi_it
-    share: 0.5
-    uses_per_month: 4
-    turns_per_session: 1
-    source: "Trung bình data BTC ≈ 17 câu / học viên / tháng (1091 câu / 144 người / 13 ngày, quy ra 30 ngày — evidence/data-mining.md mục A); tỉ lệ chia 3 kiểu và số lượt / kiểu: (tự ước tính), bình quân gia quyền 16,4 câu ≈ 17"
+    share: 0.58             # 84/144 người, < 4 phiên / tháng
+    uses_per_month: 1.5     # trung vị nhóm
+    turns_per_session: 2    # trung bình 2.05 câu / phiên
+    source: "data/preclass chat.csv: 84/144 người hỏi < 4 phiên/tháng, trung vị 1.5 phiên, 2.05 câu/phiên (evidence/count_usage_btc.py)"
   - name: hoi_vua
-    share: 0.3
-    uses_per_month: 8
-    turns_per_session: 2
-    source: "Như trên; 2 lượt / phiên vì 50% câu trả lời kéo theo hỏi tiếp trong 10 phút (evidence/data-mining.md mục A); share, số phiên: (tự ước tính)"
+    share: 0.33             # 47/144 người, 4–11 phiên / tháng
+    uses_per_month: 6.1
+    turns_per_session: 2    # trung bình 2.07 câu / phiên
+    source: "data/preclass chat.csv: 47/144 người hỏi 4–11 phiên/tháng, trung vị 6.1 phiên, 2.07 câu/phiên (evidence/count_usage_btc.py)"
   - name: hoi_nhieu
-    share: 0.2
-    uses_per_month: 12
-    turns_per_session: 4
-    source: "Như trên; nhóm hỏi nhiều kéo trung bình lên 17 câu / tháng; share, số phiên, số lượt: (tự ước tính)"
+    share: 0.09             # 13/144 người, ≥ 12 phiên / tháng
+    uses_per_month: 16.8
+    turns_per_session: 2    # trung bình 2.33 câu / phiên
+    source: "data/preclass chat.csv: 13/144 người hỏi ≥12 phiên/tháng, trung vị 16.8 phiên, 2.33 câu/phiên (evidence/count_usage_btc.py)"
+# "Phiên" = các câu một học viên hỏi trợ giảng dưới cùng một video trong cùng một ngày.
 # Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
-# Persona hỏi kiểu riêng: thêm vào persona đó
-#     types: [thuong, kho, tu_choi]
-# hoặc
-#     inputs: ["câu hỏi kiểu 1", "câu hỏi kiểu 2"]
 
-prices:             # USD / 1 triệu token. ≥2 mức model
-  - model: openai/gpt-4o-mini
+prices:             # USD / 1 triệu token — chép từ further-reading/model-prices.md của repo đề. ≥2 mức model
+  - model: gpt-4o-mini
     input: 0.15
     output: 0.60
-    source: "https://openrouter.ai/openai/gpt-4o-mini · model đã dùng ở lượt run-1 · xem 28/11/2026"
-  - model: openai/gpt-4o
-    input: 2.50
+    source: "further-reading/model-prices.md (repo đề) — https://developers.openai.com/api/docs/pricing · BTC xem 25/11/2026 · tầng Nhỏ, model đang dùng để đo token"
+  - model: Claude Sonnet 5.5
+    input: 2.00
     output: 10.00
-    source: "https://openrouter.ai/openai/gpt-4o · mức model lớn hơn để so sánh · xem 28/11/2026"
+    source: "further-reading/model-prices.md (repo đề) — trang giá Anthropic · BTC xem 25/11/2026 · tầng Lớn"
 
 usd_to_vnd:         # tuỳ chọn: điền thì bản tóm tắt in thêm tiền Việt
-  rate: 26000
-  source: "(tự ước tính) tỉ giá xấp xỉ 11/2026"
+  rate:
+  source:

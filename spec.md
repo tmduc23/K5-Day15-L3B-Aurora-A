@@ -3,7 +3,7 @@
 > Mốc nộp: §7 chốt chuẩn "đạt" tại **CP2 19:30 Thứ Sáu 27/11** · §0–§7 nộp **CP3 10:00 Thứ Bảy 28/11** · đủ §0–§10 **CP4 14:30 Thứ Bảy 28/11** · §10 changelog ghi tiếp đến **23:59 Thứ Bảy 28/11**.
 
 Track: [x] A — bài toán: Tối ưu trợ giảng AI trả lời câu hỏi dưới video có trích đúng nguồn bài, học viên tự kiểm được
-Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv (đã ẩn danh; không commit nguyên file)
+Data BTC cấp đã dùng: data/preclass/ — chat.csv, events.csv, learners.csv (đã ẩn danh; không commit nguyên file; chỉ đưa số tổng hợp vào repo)
 
 ## §0. Hiện tại việc này diễn ra thế nào *(guide 1.1)*
 - Luồng hiện tại:
@@ -31,7 +31,7 @@ Data BTC cấp đã dùng: data/preclass/ — answers.csv, chat.csv, events.csv 
 
 - **Impact / tháng** của hướng chọn = 144 người × 17 lần × 60% × 5 phút ≈ 7.300 phút (≈ 122 giờ học viên) — nguồn: 144 người, 1091 câu / 13 ngày và 60% từ `evidence/data-mining.md` mục A; 5 phút / lần *(tự ước tính, khớp pain "5–10 phút" ở §1, cần phỏng vấn kiểm lại)*. Ở quy mô cả lớp L3 (~700 học viên) con số gấp ~5 lần.
 - Hướng ĐÃ LOẠI + vì sao (giữ lại, đừng xoá): H2 — không nhắm đúng việc "hỏi một chỗ chưa hiểu", data không đo được lợi ích; H3 — có tác động ra ngoài (gửi tin cho TA), cần luồng duyệt, quá phạm vi hackathon.
-- Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8): trung bình ≈ 17 câu / người / tháng (data BTC); chia 3 kiểu ít / vừa / nhiều ở `cost/personas.yaml` *(tỉ lệ chia tự ước tính vì máy chạy code không có data BTC thô để đếm phân phối)*.
+- Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8): trung bình ≈ 17 câu / người / tháng (data BTC); chia 3 kiểu ở `cost/personas.yaml`, **đo từ data BTC** (`evidence/count_usage_btc.py`): hỏi ít 84/144 người, trung vị 1,5 phiên / tháng · hỏi vừa 47/144, 6,1 phiên · hỏi nhiều 13/144, 16,8 phiên; ~2 câu / phiên (data trải 19,7 ngày, 05–25/11).
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
 - **NotebookLM (Google):** đáng học — mỗi khẳng định gắn trích dẫn bấm được về nguồn · đáng né — vẫn trả lời bằng kiến thức chung khi nguồn yếu · mình khác: không có mã đoạn hợp lệ thì chặn hẳn, link mở đúng giây video.
@@ -102,22 +102,22 @@ flowchart LR
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
 - Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — 26 câu (thuong 8 · kho 13 · tu_choi 5; 12/26 câu hỏi thật `data_that`) · metric: `eval/metric_spec.yaml` (3 metric)
 - **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ 80% câu qua, và 0 mã đoạn bịa trong toàn bộ lượt chạy, và 100% câu tu_choi qua"
-- Kết quả: lượt 1 15/26 (58%, chưa đạt: cần ≥80%; tu_choi 5/5, 0 mã bịa) · lượt 2 __/__ (__%) — run ID: run-1@20261128-090408 / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
+- Kết quả: lượt 1 15/26 (58%, chưa đạt: cần ≥80%; tu_choi 5/5, 0 mã bịa) · lượt 2 18/26 (69%, chưa đạt; tu_choi 5/5, 0 mã bịa) — run ID: run-1@20261128-090408 / run-2@20261128-092049 → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
-- Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
-- Chi phí / task thành công: __ (model __) · __ (model __)
-- Chi phí / tháng ở quy mô thật: thấp __ · cơ sở __ · cao __ → chi tiết `cost/cost-estimate.md`
-- So với impact / người / tháng (§2): đáng làm không, vì sao:
+- Persona + giá: `cost/personas.yaml` (3 persona đo từ data BTC; gpt-4o-mini và Claude Sonnet 5.5 từ bảng giá BTC 25/11/2026) · lượt mô phỏng: `cost/simulate-1.csv` (50 phiên, seed 42, tỉ lệ đạt từ `run-2@20261128-092049`)
+- Chi phí / task thành công: **$0,0042** (gpt-4o-mini) · **$0,0561** (Claude Sonnet 5.5)
+- Chi phí / tháng ở quy mô thật (gpt-4o-mini): thấp $1,82 (144 người) · cơ sở $4,57 (361 người) · cao $9,14 (721 người); Sonnet 5.5: $24,58 · $61,62 · $123,08 → chi tiết `cost/cost-estimate.md`
+- So với impact / người / tháng (§2): đáng làm — ~$0,013 / người / tháng (gpt-4o-mini, cơ sở) so với ~50 phút / người / tháng học viên đang mất để tìm lại (§2, phút là tự ước tính). Điều kiện: tỉ lệ đạt mới 69% (< 80% chuẩn), nên cần lượt cải tiến tiếp trước khi dùng thật; chi phí không phải nút thắt.
 
 ## §9. Rủi ro & an toàn
-- Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:
-- AI **không được** làm gì kể cả khi người dùng yêu cầu:
-- Ai có thể bị hại nếu AI sai, và nhóm chặn thế nào:
+- **Dữ liệu:** chỉ gửi model đoạn transcript bài giảng công khai + câu hỏi; không gửi mã học viên hay lịch sử học. Data BTC chỉ dùng số tổng hợp (không commit nguyên file); bình luận YouTube chỉ giữ mã băm, file gốc có tên tài khoản không commit (`.gitignore`). Phỏng vấn / khảo sát không ghi tên, SĐT, email, mã học viên. Không dùng gói model miễn phí để huấn luyện trên dữ liệu học viên.
+- **AI không được** (kể cả khi được yêu cầu): trả lời bằng kiến thức ngoài bài; tự viết timestamp / link (chỉ code đổi mã đoạn ra link); làm bài tập, quiz, chấm điểm hộ; in hướng dẫn hệ thống; tự gửi tin hay báo TA.
+- **Ai có thể bị hại nếu AI sai:** học viên học sai kiến thức trước buổi lab (mất giờ TA sửa, làm sai lab). Chặn: model chỉ trích mã đoạn, code bỏ mã không tồn tại; câu trả lời không còn mã hợp lệ thì không đưa ra; mỗi ý có link để học viên tự kiểm; không có căn cứ thì nói không có. Rủi ro còn lại: trích đúng mã nhưng diễn giải sai (lượt 2: B05, B18), và từ chối nhầm khi bài có nội dung (lượt 2: 6/26) — học viên mất công hỏi lại nhưng không học sai.
 
 ## §10. Phân công & changelog
-- Phân công có tên (theo chặng, chia cặp — guide "Cách chia việc"): __
-- Dùng AI vào việc gì (2–3 dòng; chi tiết `docs/ai-usage.md`):
+- Phân công có tên (theo chặng, chia cặp — guide "Cách chia việc"): Trần Minh Đức — PM, đào data preclass, canvas & spec · Trần Tùng Lâm — phỏng vấn học viên, `evidence/summary.md`, chi phí (`cost/`) · Trần Thị Nhài — bộ câu thử, metric, chạy và chấm eval · Ngô Ngọc Hải — `codebase/` (agent, công cụ, nối model), video demo.
+- Dùng AI vào việc gì (2–3 dòng; chi tiết `docs/ai-usage.md`): Claude Code viết code bản chạy thử và prompt, script đếm data, chọn câu hỏi thật vào bộ câu thử, chấm nháp cột `pass` theo `pass_criterion` (người duyệt lại), soạn nháp các mục spec / báo cáo từ số liệu đã chạy. Không dùng AI để tạo người được phỏng vấn, trích dẫn hay sửa kết quả các lượt.
 - Nhật ký thay đổi — **mọi thay đổi sau CP2 19:30 Thứ Sáu 27/11 phải có dòng ở đây**:
 
 **CP2 → CP4** (vd thu hẹp lát cắt, hỏi thêm người dùng, lần cải tiến trước lượt 2)
@@ -131,6 +131,8 @@ flowchart LR
 | 28/11 09:40 | Điền §2, §3, §5, §6; sửa §4 "phần nào còn giả" cho đúng hiện trạng (model thật, data bài vẫn thay tạm); `cost/personas.yaml` thay số ví dụ bằng số từ data BTC + giá gpt-4o-mini | Hoàn thành §0–§7 cho CP3 |
 | 28/11 09:20 | Cải tiến cho lượt 2 (CP4): `data/lesson_segments.csv` thay chữ 17 đoạn B2 bằng phụ đề tiếng Anh gốc (giữ nguyên mã đoạn và mốc thời gian); `codebase/agent.py` sửa prompt: đối chiếu theo nghĩa khi khác ngôn ngữ, đọc đoạn quanh mốc thời gian trong câu hỏi, trả lời phần có trong bài, sửa tiền đề sai, chỉ hỏi lại khi câu hỏi trỏ tới thứ không xác định | Lượt 1: 7/11 câu trượt là từ chối nhầm (B10, B15, B18–B22), transcript B2 là bản dịch máy khó khớp; B06, B07, B11, B16 (`eval/report.md` §2) |
 | 28/11 | Thêm `extras/lecture-videorag/` (chép từ repo riêng, commit `f9d489f`) làm hướng mở rộng sau hackathon; không thuộc bản chạy thử, không đổi `codebase/`, `run.py`, bộ câu thử hay kết quả các lượt | Lưu lại phần "không làm" ở §4 (nhiều video, tóm tắt cả khoá) để nhóm làm tiếp; ghi rõ ở `extras/README.md` để không nhầm là phần nộp |
+| 28/11 10:00 | Chấm lượt 2 (`run-2@20261128-092049`): 18/26; điền §8, §9, §10 phân công; mô phỏng chi phí 50 phiên (`cost/simulate-1.csv`) | CP4: lượt 2 + chi phí; tỉ lệ đạt lấy từ lượt 2 |
+| 28/11 10:30 | `cost/personas.yaml`: thay bản tự ước tính (09:40) bằng bản **đo từ data BTC** (`evidence/count_usage_btc.py`: 144 người hỏi, chia theo số phiên / tháng; người dùng 144 / 361 / 721; giá theo bảng giá BTC). `cost/simulate-1.csv` chạy theo bản này | Số persona có nguồn đo được thay cho tự ước tính; giá lấy đúng bảng BTC như guide 4.2 |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
